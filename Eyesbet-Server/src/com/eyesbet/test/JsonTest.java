@@ -7,7 +7,8 @@
 /*    */ 
 /*    */ public class JsonTest
 /*    */ {
-/*    */   @Test
+/*    */   @SuppressWarnings("unused")
+@Test
 /*    */   public void test()
 /*    */   {
 /* 24 */     String url = "http://xml1.livescorefeed.net/data/basketball.php?key=2c9c8d0eb13013b0219ef54f79900fa66149edc6&timezone_id=21&country_id=20&games=fixtures&date=2013-01-22";
