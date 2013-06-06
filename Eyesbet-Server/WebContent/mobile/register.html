@@ -1,0 +1,129 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Eyesbet Register User</title>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" /> 
+ <script src="http://code.jquery.com/jquery-1.8.3.js"></script> 
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+
+ <script type="text/javascript">
+ 
+ function submitForm() {
+     
+    var query = "";
+    password = "";
+    cpassword = ""; 
+    elements = document.getElementsByTagName("input");
+    
+    for (var i=0; i < elements.length; i++) {
+        
+        if (elements[i].name == "firstName") {
+        	query = query + "firstName="+elements[i].value +"&";
+           if (elements[i].value = "") {
+               alert("Invalid first name");
+               return false;
+           }
+        } if (elements[i].name == "lastName") {
+           query = query + "lastName="+elements[i].value + "&";
+        } if ( elements[i].name == "email") {
+        		query = query + "email="+elements[i].value + "&";
+         } if (elements[i].name == "city") {
+         
+              query = query + "city="+elements[i].value + "&";
+         	} if (elements[i].name == "username") {
+         	     
+         	     if (elements[i].value.length < 3) {
+         	     	alert("Invalid username");
+         	     	return false;
+         	     } else {
+         	     	 query = query + "username="+elements[i].value + "&";
+         	     }
+         	   
+         	} if (elements[i].name == "password") {
+         	    
+         	   if (elements[i].value.length < 3) {
+         	      alert("Invalid password length. Must be greater than 3 characters");
+         	      return false;
+         	   } else {
+         	    password = elements[i].value;
+         	   
+         	   }
+         	} if (elements[i].name == "confirmPassword") {
+         	
+         	    cpassword = elements[i].value;
+         	     
+         	
+         	}
+       
+    }
+    
+     if (password != cpassword) {
+         
+     	alert("Password does not match the confirm password");
+     	return false;
+     } else {
+       	query = query +"password="+password;
+     }
+    
+  	$.ajax({
+		type: 'POST',
+		data: query,
+		url: 'http://localhost:8080/eyesbet/m.register',
+		dataType: 'html',
+		success: function(xml){
+		
+			alert("You have registered successfully");
+		
+			
+			
+		},
+		error: function(){
+			
+			alert("There was an error processing your request");
+		}
+	});
+	
+ 	
+ 	
+ 	return false;
+   }
+  
+  
+ 
+ </script>
+
+
+</head>
+<body>
+
+<div style="margin-left:20px;margin-top:20px">
+
+ <form  >
+ 
+  <table>
+  
+   <tr> <td>First Name: </td> <td> <input type="text" name="firstName" /> </td>  </tr>
+     <tr> <td>Last Name: </td> <td> <input type="text" name="lastName" /> </td>  </tr>
+       <tr> <td>Email: </td> <td> <input type="text" name="email" /> </td>  </tr>
+         <tr> <td>City: </td> <td> <input type="text" name="city" /> </td>  </tr>
+         <tr> <td>Username: </td> <td> <input type="text" name="username" /> </td>  </tr>
+             <tr> <td>Password: </td> <td> <input type="password" name="password" /> </td>  </tr>
+             <tr> <td>Confirm Password: </td> <td> <input type="password" name="confirmPassword" /> </td>  </tr>
+      
+  
+  </table>
+ <div style="margin-top:20px">
+ <input type="button"  value="Register" onclick="return submitForm()" />
+ </div>
+ </form>
+
+
+
+
+</div>
+
+
+</body>
+</html>

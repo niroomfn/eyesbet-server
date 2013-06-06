@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<display-name>Eyesbet</display-name>
+	<listener>
+		<listener-class>com.eyesbet.web.listeners.SessionListener</listener-class>
+	</listener>
+	<filter>
+	 <filter-name>SessionFilter</filter-name>
+	 <filter-class>com.eyesbet.web.listeners.SessionAuthenticationFilter</filter-class>
+	 <init-param>
+	 <param-name>allowedRequests</param-name>
+	 <param-value>/m.login,/m.register</param-value>
+	 </init-param>
+	  <init-param>
+	 <param-name>loginPage</param-name>
+	 <param-value>/displayLeagues</param-value>
+	 </init-param>
+	</filter>
+	<servlet>
+		<description>
+		</description>
+		<display-name>Controller</display-name>
+		<servlet-name>Controller</servlet-name>
+		<servlet-class>com.eyesbet.web.servlets.Controller</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<description>
+		</description>
+		<display-name>MonitorServlet</display-name>
+		<servlet-name>MonitorServlet</servlet-name>
+		<servlet-class>com.eyesbet.web.servlets.MonitorServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>FixturesLoaderServlet</display-name>
+		<servlet-name>FixturesLoaderServlet</servlet-name>
+		<servlet-class>com.eyesbet.web.servlets.FixturesLoaderServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>FixtureServlet</display-name>
+		<servlet-name>FixtureServlet</servlet-name>
+		<servlet-class>com.eyesbet.web.servlets.FixtureServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>mobileController</display-name>
+		<servlet-name>mobileController</servlet-name>
+		<servlet-class>com.eyesbet.mobile.web.servlets.MobileController</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>LiveGameServlet</display-name>
+		<servlet-name>LiveGameServlet</servlet-name>
+		<servlet-class>com.eyesbet.web.servlets.LiveGameServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Controller</servlet-name>
+		<url-pattern>/controller</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>mobileController</servlet-name>
+		<url-pattern>/m.login</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Controller</servlet-name>
+		<url-pattern>/saveBet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>MonitorServlet</servlet-name>
+		<url-pattern>/monitor</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Controller</servlet-name>
+		<url-pattern>/createBet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Controller</servlet-name>
+		<url-pattern>/displayBets</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Controller</servlet-name>
+		<url-pattern>/removeBet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Controller</servlet-name>
+		<url-pattern>/register</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Controller</servlet-name>
+		<url-pattern>/login</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Controller</servlet-name>
+		<url-pattern>/trackBets</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Controller</servlet-name>
+		<url-pattern>/closeWindow</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>FixturesLoaderServlet</servlet-name>
+		<url-pattern>/fixturesLoader</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Controller</servlet-name>
+		<url-pattern>/displayLeagues</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>FixtureServlet</servlet-name>
+		<url-pattern>/fixtures</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>mobileController</servlet-name>
+		<url-pattern>/mobileController</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>mobileController</servlet-name>
+		<url-pattern>/m.createBet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>mobileController</servlet-name>
+		<url-pattern>/m.register</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>mobileController</servlet-name>
+		<url-pattern>/m.saveBet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>mobileController</servlet-name>
+		<url-pattern>/m.logout</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet-mapping>
+		<servlet-name>mobileController</servlet-name>
+		<url-pattern>/m.displayBets</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>mobileController</servlet-name>
+		<url-pattern>/m.removeBet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>mobileController</servlet-name>
+		<url-pattern>/m.betDetail</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>mobileController</servlet-name>
+		<url-pattern>/m.trackBet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>mobileController</servlet-name>
+		<url-pattern>/m.cancelTrackBet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>MonitorServlet</servlet-name>
+		<url-pattern>/m.monitorBet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>LiveGameServlet</servlet-name>
+		<url-pattern>/m.livegame</url-pattern>
+	</servlet-mapping>
+	
+	 <filter-mapping>
+    	<filter-name>SessionFilter</filter-name>
+    	<url-pattern>/*</url-pattern>
+    </filter-mapping>
+	
+	<session-config>
+	 <session-timeout>
+	  1
+	 </session-timeout>
+	</session-config>
+	
+	
+	 <resource-ref>
+    
+        <description>Project database</description>
+        <res-ref-name>jdbc/eyesbet</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
+    
+    <welcome-file-list>
+     <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+	
+	
+</web-app>

@@ -1,0 +1,273 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+
+<head>
+
+
+ 
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Eyesbet</title>
+ <script src="http://code.jquery.com/jquery-1.8.3.js"></script> 
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+<script type="text/javascript" defer="defer">
+
+var inputs;
+var betType;
+$(document).ready(function() {  
+
+
+	$.ajax({
+	        type: 'GET',
+	        url: "http://localhost:8080/eyesbet/m.createBet?&cmd=getBet",
+	        dataType: "xml",
+	        
+	        success: function (xml) { 
+
+			 parseXml(xml);
+	      
+	        }, 
+	        error: function(xhr, textStatus, error){
+	       alert( error);
+	    },
+	        }); 
+	        });
+
+
+
+
+
+ 
+function validateOverUnder(game,over_under) {
+	
+	under =  document.getElementById(game+"_under");
+	over  =  document.getElementById(game+"_over");
+	
+	if (over_under == "over") {
+		
+		under.value = "";
+	} else {
+		over.value = "";
+	}
+	
+	if (betType == "straightWages") {
+		 favorite = game.substring(0,game.indexOf("_"));
+		 underdog = game.substring(game.indexOf("_")+1, game.length);
+		 id = favorite+"_spreadPoint";
+		 e = document.getElementById(id);
+		 e.value = "";
+		 id = underdog + "_spreadPoint";
+		 e = document.getElementById(id);
+		 e.value = "";
+		
+	}
+
+}
+
+function validateBetType(betType) {
+	
+
+	
+	
+	if (betType == "moneyline") {
+	for (var i=0; i< inputs.length; i++) {
+		input = inputs[i];
+		if (input.type == "text") {
+			input.disabled = "disabled";
+		} else if (input.type == "radio" && input.name.indexOf("moneyline") > 0) {
+			input.disabled = "";
+		}
+	}
+	
+	} else if (betType == "points") {
+		
+		for (var i=0; i< inputs.length; i++) {
+			input = inputs[i];
+			if (input.type == "radio" && input.name.indexOf("moneyline") >= 0) {
+				input.checked = false;
+				input.disabled = "disabled";
+			} else if (input.type == "text" ) {
+				input.disabled = "";
+			}
+		}
+		
+	}
+	
+
+	
+	
+}
+
+function validatePointSpread(game) {
+	if (betType == "straightWages") {
+		over = document.getElementById(game+"_over");
+		under = document.getElementById(game+"_under");
+		over.value = "";
+		under.value="";
+	}
+	
+	
+}
+
+
+
+function parseXml(xml) {
+	 row = "";
+	 $(xml).find("bet").each(function() {
+		 
+		 betType = $(this).attr("type");
+	 } );
+	 
+	 
+	 $(xml).find("game").each(function()
+	  	{
+	  			//id = $(this).attr("n");
+	  			
+	  			row = "<tr><td width='30%'>"+ $(this).attr("a") +" </td>"+
+	  			 "<td width='25%'><input type='radio' id='"+$(this).attr("id")+"_moneyline'"+" name='"+$(this).attr("a")+"_moneyline' value='"+$(this).attr("a")+"'  /> </td>"+
+                
+	  			 "<td style='' >"+
+
+	  			" <select name='"+$(this).attr("a")+"_fu' > <option value='+' > + </option> <option value='-' > - </option> </select>"+
+	  			 "<input type='text' id='"+$(this).attr("a")+"_spreadPoint'"+" name='"+$(this).attr("a")+"_spreadPoint' size='3' onkeydown='validatePointSpread('"+$(this).attr("id")+"')' /> </td>"+
+	  			 
+	  			 "<td style=''>Over <input type='text' id='"+$(this).attr("id")+"_over' name='"+$(this).attr("id")+"_over' size='3' onkeydown='validateOverUnder('"+$(this).attr("id")+"','over')' /> </td></tr>";
+	  			$('#betTable').append(row);
+	  			 
+	  			 
+	  			row = "<tr><td width='30%'>"+ $(this).attr("h") +" </td>"+
+	  			 "<td><input type='radio' id='"+$(this).attr("id")+"_moneyline'"+" name='"+$(this).attr("h")+"_moneyline' value='"+$(this).attr("h")+"'  /> </td>"+
+
+	  			 "<td style=''>"+
+
+	  			" <select name='"+$(this).attr("h")+"_fu' > <option value='+' > + </option> <option value='-' > - </option> </select>"+
+	  			 "<input type='text' id='"+$(this).attr("h")+"_spreadPoint'"+" name='"+$(this).attr("h")+"_spreadPoint' size='3' onkeydown='validatePointSpread('"+$(this).attr("id")+"')' /> </td>"+
+	  			 
+	  			 "<td style=''>Under <input type='text' id='"+$(this).attr("id")+"_under' name='"+$(this).attr("id")+"_under' size='3' onkeydown='validateOverUnder('"+$(this).attr("id")+"','under')' /> </td></tr>";
+	  			$('#betTable').append(row);
+	  			 
+	  			row = "<tr><td style='border-bottom-width:1px;border-bottom-style:solid;' colspan='4'></td></tr>"; 
+	  			$('#betTable').append(row);
+			   
+	});  
+	 
+
+	  inputs = document.getElementsByTagName("input");
+	  
+	 for (var i=0; i< inputs.length; i++) {
+	 	input = inputs[i];
+	 	if (input.type == "radio" && input.name.indexOf("moneyline") >= 0) {
+	 		input.checked = false;
+	 		input.disabled = "disabled";
+	 	} else if (input.type == "text" ) {
+	 		input.disabled = "";
+	 	}
+	 }
+	
+	
+}
+
+
+
+
+function submitForm() {
+	query = "";
+	input;
+	for (var i=0; i < inputs.length; i++) {
+		 input = inputs[i];
+		 
+		 if (input.type != "submit") {
+			 if (input.type == "radio" && input.checked == false) {
+				 // ignore this input
+				 
+			 }else {
+			 query = query + input.name+ "="+ input.value+ "&";
+			 }
+			 
+		 }
+		 
+	}
+		
+	
+	
+	alert(query);
+	
+	$.ajax({
+        type: 'POST',
+        data: query,
+        url: "http://localhost:8080/eyesbet/m.saveBet",
+        dataType: "xml",
+        
+        success: function (xml) { 
+
+		 alert("You have created your bet successfully"	);
+		 window.location = "http://localhost:8080/eyesbet/mobile/displayBets.html";
+      
+        }, 
+        error: function(xhr, textStatus, error){
+       alert( error);
+    },
+        }); 
+      
+
+	
+	return false;
+	
+}
+
+</script>
+
+
+</head>
+<body >
+
+
+
+<form name="myform" action="<%=request.getContextPath()%>/saveBet" >
+
+
+
+<div class="betTable">
+<table  width="100%" style=" table-layout:fixed; border-bottom: 1px;border-bottom-style: solid;" cellpadding="5" >
+<tr  style="font-weight: bold;" >
+<td width="30%">
+  Games
+  
+ </td>
+<td  width="25%" style="border-right: 1px;border-right-style: solid;border-left: 1px;border-left-style: solid; ">
+<input type="radio"   name="betType" value="moneyline" onclick="validateBetType('moneyline')"/> Money Line </td>
+<td > <input type="radio" checked="checked" name="betType"  value="points" onclick="validateBetType('points')"/> Points </td>
+
+</tr>
+</table>
+
+<table style="table-layout: fixed;"  cellpadding="5" width="100%">
+<tr style="font-weight: bold;">
+<td width="30%" > </td>
+<td width="25%">Money Line</td>
+
+<td >Spread Point</td>
+<td >Over/Under</td>
+
+
+</tr>
+</table>
+<table style="table-layout: fixed" width="100%"  cellpadding="5" id="betTable">
+
+
+
+
+
+
+</table>
+
+<input  type="submit" name="submit" value="Save Bet" onclick="return submitForm()" />
+
+</div>
+</form>
+
+
+
+</body>
+</html>

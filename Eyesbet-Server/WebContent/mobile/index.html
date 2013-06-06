@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Eyesbet</title>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" /> 
+ <script src="http://code.jquery.com/jquery-1.8.3.js"></script> 
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+
+<script type="text/javascript">
+
+function login() {
+	
+	username = document.getElementById("username").value;
+	pass = document.getElementById("password").value;
+	
+	$.ajax({
+		type: 'POST',
+		data: "username="+username+"&password="+pass,
+		url: 'http://localhost:8080/eyesbet/m.login',
+		dataType: 'xml',
+		beforeSend: function(xhr){
+            xhr.withCredentials=true;
+            },
+
+		success: function(xml){
+		
+			if(xml == null) {
+			  alert("Invalid username/password. Please try again");
+			  return false;
+			} else {
+			$(xml).find("user").each(function() {
+			
+			   window.location = "displayBets.html"; 
+			   });
+			}
+			
+		},
+		error: function(){
+			
+			alert('There was an error adding your comment');
+		}
+	});
+	
+	return false;
+ }
+ 
+ 
+ function register() {
+   
+   window.location = "http://localhost:8080/eyesbet/mobile/register.html";
+ 
+ }
+
+</script>
+
+
+
+</head>
+<body>
+ 
+ <div style="margin-left:5px;margin-right:5px;margin-top:10px;margin-bottom:5px" >
+ 
+ <form >
+ 
+   <table>
+    <tr><td>User Name:</td><td><input type="text" id="username" /> </td></tr>
+    <tr><td>Password:</td><td><input type="password" id="password" /> </td></tr>
+   <tr><td></td><td>
+   <input type="submit" name="submit" value="Login" onclick="return login()" />
+  <input type="button" value="Register" onclick="register()" />
+  </td></tr>
+   </table>
+ 
+  
+ </form>
+ 
+ 
+ 
+ 
+ </div>
+ 
+ 
+ 
+</body>
+</html>

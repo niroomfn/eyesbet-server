@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Eyesbet</title>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" /> 
+ <script src="http://code.jquery.com/jquery-1.8.3.js"></script> 
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {  
+
+
+$.ajax({
+        type: 'GET',
+        url: "http://localhost:8080/eyesbet/fixtures",
+        dataType: "xml",
+        
+        success: function (xml) { 
+
+		  parseLeague(xml);
+		 
+      
+        }, 
+        error: function(xhr, textStatus, error){
+       alert( error);
+    },
+        }); 
+        });
+
+
+
+  $(function() { 
+              $( "#leagues" ).tabs();    });
+              
+              
+  function parseLeague(data) {
+   var id;
+   var value="";
+   $(data).find("league").each(function()
+  			{
+  			id = $(this).attr("n");
+  			$(this).find("fixture").each(function() {
+  			 value = $(this).attr("a")+"@"+$(this).attr("h")+"@"+$(this).attr("s")+"@"+$(this).attr("id")+"@"+id;
+  			$('#table_'+id).append("<tr><td width='5%'><input type='checkbox'  name='games' value='"+value+"'/></td><td>"+$(this).attr("a")+"</td><td width='5%'>@</td><td>"+$(this).attr("h")+"</td><td>"+$(this).attr("s")+"</td></tr>");
+  			
+		    });
+		 
+		  });  
+   
+   
+  
+  }
+  
+ function validate() {
+    var check = false;
+    var checkedGames = "";
+    count =0;
+ 	
+ 	
+ 	
+ 	games = document.getElementsByName("games");
+ 	for (i=0; i < games.length; i++) {
+ 	 
+ 	  if (games[i].checked) {
+ 		  count++;
+ 	  	check = true;
+ 	  	checkedGames = checkedGames + games[i].value+",";
+ 	  
+ 	  }  
+ 	}
+ 	
+ 	
+ 	if (check == false) {
+ 	   alert("You must select a game to continue");
+ 	   return false;
+ 	} else {
+ 		
+ 	   submitForm(checkedGames);
+ 	   return false;
+ 	}
+ 	
+ 	
+ 
+  }
+  
+  
+  function submitForm(games) {
+  
+  
+  	$.ajax({
+		type: 'POST',
+		data: "games="+games,
+		url: 'http://localhost:8080/eyesbet/m.createBet',
+		dataType: 'xml',
+		beforeSend: function(xhr){
+            xhr.withCredentials=true;
+            },
+
+		success: function(xml){
+		
+			window.location = "enterBet.html";
+			
+		},
+		error: function(xhr, textStatus, error){
+			
+			alert(error);
+		}
+	});
+	
+   
+   
+  
+  }
+                  
+</script>
+
+
+</head>
+<body>
+ 
+ 
+ <div  style=" background-color:black; position: fixed; top: 0; z-index:999; width:100%; height: 35px">
+  <a style=" color: white;margin-left:5px;margin-right:20px;margin-top:5px;margin-bottom:5px"  href="displayBets.html" >My Bets</a>
+  
+  <a style=" color: white;margin-left:5px;margin-top:5px;margin-bottom:5px"  href="displayLeagues.html" >Log Out</a>
+  
+  </div>
+
+<form > 
+ 
+
+  
+  <div style="width:100%;font-size: small;margin-top:30px" id="leagues">
+<ul>       
+
+ 
+ <li><a href="#NBA">NBA</a></li>      
+ <li><a href="#NFL">NFL</a></li>  
+   
+         <li><a href="#MLB">MLB</a></li>  
+         <li><a href="#NHL">NHL</a></li>
+         
+    </ul>
+ <div id="NBA" >
+ <table id="table_NBA" >
+ 
+ 
+ </table>
+ </div>
+ 
+  <div id="NFL">
+   <table id="table_NFL" >
+ 
+ 
+ </table>
+  
+  </div>
+  
+  <div id="NHL" >
+    <table id="table_NBA" >
+ 
+ 
+ </table>
+  </div>
+   
+  <div id="MLB" >
+  <table id="table_MLB" >
+ 
+ 
+ </table>
+  
+  </div>
+  </div>
+ 
+ <div style=" background-color:black; position: fixed; bottom:0; width:100%; height: 35px">
+ <input style="margin-bottom:5px;margin-top:5px" type="submit" name="submit" value="Create Bet" onclick="return validate()"/>
+ </div>
+</form>
+
+</body>
+</html>
