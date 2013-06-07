@@ -12,13 +12,10 @@
 /*    */     throws Exception
 /*    */   {
 /* 15 */     SAXParserFactory factory = SAXParserFactory.newInstance();
-/*    */ 
+
 /* 17 */     this.parser = factory.newSAXParser();
+			
 /* 18 */     this.parser.parse(url, handler);
 /*    */   }
 /*    */ }
 
-/* Location:           C:\Users\farbod.niroomand.cor\Desktop\eyesbetwar\classes\
- * Qualified Name:     com.eyesbet.app.xml.FeedSaxParser
- * JD-Core Version:    0.6.2
- */

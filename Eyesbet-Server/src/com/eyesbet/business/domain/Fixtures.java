@@ -39,6 +39,12 @@
 /*     */   {
 /*  76 */     this.map.put(Leagues.NBA.toString(), list);
 /*     */   }
+
+			public void appendFixtures(Set<Fixture> list, Leagues league) {
+				
+				map.get(league.toString()).addAll(list);
+				
+			}
 /*     */ 
 /*     */   public void setNFLFixtures(Set<Fixture> list) {
 /*  80 */     this.map.put(Leagues.NFL.toString(), list);

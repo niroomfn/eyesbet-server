@@ -31,7 +31,7 @@ import org.apache.log4j.BasicConfigurator;
 				FixtureScheduler scheduler = new FixtureScheduler();
 /*     */     try
 /*     */     {
-				//scheduler.schedule();
+				scheduler.schedule();
 /*  36 */       this.loadDate = new Date();
 /*     */     } catch (Exception e) {
 /*  38 */       this.logger.error("Error loading fixtures", e);
