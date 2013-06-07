@@ -31,13 +31,7 @@
 		<servlet-name>MonitorServlet</servlet-name>
 		<servlet-class>com.eyesbet.web.servlets.MonitorServlet</servlet-class>
 	</servlet>
-	<servlet>
-		<description>
-		</description>
-		<display-name>FixturesLoaderServlet</display-name>
-		<servlet-name>FixturesLoaderServlet</servlet-name>
-		<servlet-class>com.eyesbet.web.servlets.FixturesLoaderServlet</servlet-class>
-	</servlet>
+	
 	<servlet>
 		<description>
 		</description>
@@ -109,10 +103,7 @@
 		<servlet-name>Controller</servlet-name>
 		<url-pattern>/closeWindow</url-pattern>
 	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>FixturesLoaderServlet</servlet-name>
-		<url-pattern>/fixturesLoader</url-pattern>
-	</servlet-mapping>
+	
 	<servlet-mapping>
 		<servlet-name>Controller</servlet-name>
 		<url-pattern>/displayLeagues</url-pattern>

@@ -3,6 +3,7 @@
 /*     */ import com.eyesbet.business.FixturesLoader;
 /*     */ import com.eyesbet.business.domain.Fixture;
 /*     */ import com.eyesbet.business.domain.Fixtures;
+import com.eyesbet.business.quartz.FixtureScheduler;
 /*     */ import com.eyesbet.util.DateTime;
 /*     */ import java.io.IOException;
 /*     */ import java.util.Date;
@@ -11,6 +12,8 @@
 /*     */ import javax.servlet.http.HttpServlet;
 /*     */ import javax.servlet.http.HttpServletRequest;
 /*     */ import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.BasicConfigurator;
 /*     */ import org.apache.log4j.Logger;
 /*     */ 
 /*     */ public class FixtureServlet extends HttpServlet
@@ -21,9 +24,14 @@
 /*     */ 
 /*     */   public FixtureServlet()
 /*     */   {
-/*  32 */     FixturesLoader loader = new FixturesLoader(DateTime.getDefaultTimeZone());
+/*  32 */     	BasicConfigurator.configure();
+	
+				FixturesLoader loader = new FixturesLoader(DateTime.getDefaultTimeZone());
+
+				FixtureScheduler scheduler = new FixtureScheduler();
 /*     */     try
 /*     */     {
+				//scheduler.schedule();
 /*  36 */       this.loadDate = new Date();
 /*     */     } catch (Exception e) {
 /*  38 */       this.logger.error("Error loading fixtures", e);
