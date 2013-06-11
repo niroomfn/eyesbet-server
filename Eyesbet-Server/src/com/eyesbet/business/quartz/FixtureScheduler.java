@@ -30,7 +30,7 @@ public class FixtureScheduler {
 	  
 	 CronTrigger trigger = newTrigger()
 			    .withIdentity("fixture", "Fixtures")
-			    .withSchedule( dailyAtHourAndMinute(16, 32))
+			    .withSchedule( dailyAtHourAndMinute(17, 12))
 			    .forJob(job.getKey())
 			    .build();
 	  

@@ -1,78 +1,107 @@
-/*    */ package com.eyesbet.mobile.web.command;
-/*    */ 
-/*    */ import com.eyesbet.business.domain.Bet;
-/*    */ import com.eyesbet.business.domain.BetType;
-/*    */ import com.eyesbet.business.domain.Fixtures.Leagues;
-/*    */ import com.eyesbet.business.domain.Game;
-/*    */ import com.eyesbet.business.domain.Team;
-/*    */ import java.util.List;
-/*    */ import javax.servlet.http.HttpServletRequest;
-/*    */ 
-/*    */ public class CreateBetCommand extends MobileCommand
-/*    */ {
-/*    */   public CreateBetCommand(HttpServletRequest request)
-/*    */   {
-/* 16 */     super(request);
-/*    */   }
-/*    */ 
-/*    */   public String execute()
-/*    */     throws Exception
-/*    */   {
-/* 23 */     String cmd = this.request.getParameter("cmd");
-/*    */ 
-/* 25 */     if (cmd == null)
-/*    */     {
-/* 28 */       String[] games = this.request.getParameter("games").split(",");
-/* 29 */       String betType = null;
-/* 30 */       if (games.length > 1)
-/* 31 */         betType = BetType.parlay.toString();
-/* 32 */       else if (games.length == 1) {
-/* 33 */         betType = BetType.straightWages.toString();
-/*    */       }
-/* 35 */       Game game = null;
-/* 36 */       Bet bet = new Bet(BetType.valueOf(betType), 0);
-/* 37 */       String[] teams = null;
-/* 38 */       for (String g : games)
-/*    */       {
-/* 40 */         teams = g.split("@");
-/*    */ 
-/* 42 */         game = new Game(new Team(0, teams[1]), new Team(0, teams[0]), Leagues.valueOf(teams[4]));
-/* 43 */         game.setId(Integer.parseInt(teams[3]));
-/* 44 */         game.setSchedule(teams[2]);
-/* 45 */         bet.addGame(game);
-/*    */       }
-/*    */ 
-/* 50 */       buildXml(bet);
-/*    */ 
-/* 52 */       this.request.getSession().setAttribute("bet", bet);
-/*    */ 
-/* 57 */       return "";
-/*    */     }
-/* 59 */     if ("getBet".equals(cmd))
-/*    */     {
-/* 61 */       return ((Bet)this.request.getSession().getAttribute("bet")).getXml();
-/*    */     }
-/*    */ 
-/* 66 */     return "Invalid command";
-/*    */   }
-/*    */ 
-/*    */   private void buildXml(Bet bet)
-/*    */   {
-/* 73 */     this.xmlResponse.append("<bet type='").append(bet.getBetType()).append("' >");
-/* 74 */     List<Game> list = bet.getGames();
-/* 75 */     for (Game game : list)
-/*    */     {
-/* 77 */       this.xmlResponse.append("<game a='").append(game.getAway().getName()).append("'");
-/* 78 */       this.xmlResponse.append(" h='").append(game.getHome().getName()).append("'");
-/* 79 */       this.xmlResponse.append(" id='").append(game.getGameId()).append("' />");
-/*    */     }
-/*    */ 
-/* 82 */     this.xmlResponse.append("</bet>");
-/* 83 */     bet.setXml(this.xmlResponse.toString());
-/*    */   }
-/*    */ }
+ package com.eyesbet.mobile.web.command;
+ 
+ import com.eyesbet.business.domain.Bet;
+ import com.eyesbet.business.domain.BetType;
+import com.eyesbet.business.domain.Bets;
+ import com.eyesbet.business.domain.Fixtures.Leagues;
+ import com.eyesbet.business.domain.Game;
+ import com.eyesbet.business.domain.Team;
+ import java.util.List;
+ import javax.servlet.http.HttpServletRequest;
+ 
+ public class CreateBetCommand extends MobileCommand
+ {
+   public CreateBetCommand(HttpServletRequest request)
+   {
+     super(request);
+   }
+ 
+   public String execute()
+     throws Exception
+   {
+     String cmd = this.request.getParameter("cmd");
+ 	 
+     if (cmd == null)
+     {
+       String[] games = this.request.getParameter("games").split(",");
+       String betType = null;
+       if (games.length > 1)
+         betType = BetType.parlay.toString();
+       else if (games.length == 1) {
+         betType = BetType.straightWages.toString();
+       }
+       Game game = null;
+       Bet bet = new Bet(BetType.valueOf(betType), 0);
+       String[] teams = null;
+       for (String g : games)
+       {
+         teams = g.split("@");
+ 
+         game = new Game(new Team(0, teams[1]), new Team(0, teams[0]), Leagues.valueOf(teams[4]));
+         game.setId(Integer.parseInt(teams[3]));
+         game.setSchedule(teams[2]);
+         bet.addGame(game);
+       }
+ 
+       buildXml(bet,"");
+ 
+       this.request.getSession().setAttribute("bet", bet);
+ 
+       return "";
+     } else if ("editBet".equals(cmd)) {
+	
+	            createBetForEdit();
+	
+				}
+    
 
-/* Location:           C:\Users\farbod.niroomand.cor\Desktop\eyesbetwar\classes\
- * Qualified Name:     com.eyesbet.mobile.web.command.CreateBetCommand
- * JD-Core Version:    0.6.2
- */
+			if ("getBet".equals(cmd))
+     {
+       return ((Bet)this.request.getSession().getAttribute("bet")).getXml();
+     }
+ 
+     return "Invalid command";
+   }
+
+
+           private void createBetForEdit() {
+        	   
+        	   Bet bet = new Bet(BetType.parlay, 0);
+        	   
+        	   String[] games = this.request.getParameter("games").split(",");
+        	         
+        	          Game game = null;
+        	          String[] teams = null;
+        	          for (String g : games)
+        	          {
+        	            teams = g.split("@");
+        	    
+        	            game = new Game(new Team(0, teams[1]), new Team(0, teams[0]), Leagues.valueOf(teams[4]));
+        	            game.setId(Integer.parseInt(teams[3]));
+        	            game.setSchedule(teams[2]);
+        	            bet.addGame(game);
+        	          }
+        	    
+        	          buildXml(bet,request.getParameter("betType"));
+        	    
+        	          this.request.getSession().setAttribute("bet", bet);
+        	   
+           }
+			
+ 
+   private void buildXml(Bet bet, String betType)
+   {
+     this.xmlResponse.append("<bet type='").append(bet.getBetType()).append("' >");
+     List<Game> list = bet.getGames();
+     for (Game game : list)
+     {
+       this.xmlResponse.append("<game a='").append(game.getAway().getName()).append("'");
+       this.xmlResponse.append(" h='").append(game.getHome().getName()).append("'");
+       this.xmlResponse.append(" id='").append(game.getGameId()).append("' bt='"+betType+"' />");
+     }
+ 
+     this.xmlResponse.append("</bet>");
+     bet.setXml(this.xmlResponse.toString());
+   }
+ }
+
