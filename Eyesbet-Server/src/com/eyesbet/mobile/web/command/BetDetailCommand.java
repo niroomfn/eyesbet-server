@@ -27,28 +27,30 @@
       
 			   int betId = 0;
 			try {
-				betId = Integer.parseInt(this.request.getParameter("betId"));
+				betId = Integer.parseInt(request.getParameter("betId"));
 			} catch (Exception e) {
+				
 				betId = this.betId;
 			}
+			
 			   
-       Bets bets = (Bets)this.request.getSession().getAttribute("bets");
- 
-       Bet bet = bets.getBet(betId);
- 
-        xml = buildXml(bet);
- 
-       this.request.getSession().setAttribute("betDetail", xml);
- 
+		       Bets bets = (Bets)this.request.getSession().getAttribute("bets");
+		 
+		       Bet bet = bets.getBet(betId);
+		       
+		       xml = buildXml(bet);
+		 
+		       this.request.getSession().setAttribute("betDetail", xml);
+	 
        
      } else {
  
-      xml = (String)this.request.getSession().getAttribute("betDetail");
- 
-     this.request.getSession().removeAttribute("betDetail");
-			}
- 
-     return xml;
+		      xml = (String)this.request.getSession().getAttribute("betDetail");
+		 
+		     this.request.getSession().removeAttribute("betDetail");
+     }
+	 
+	   return xml;
    }
  
    private String buildXml(Bet bet)
@@ -86,6 +88,11 @@ public int getBetId() {
 }
 public void setBetId(int betId) {
 	this.betId = betId;
+}
+
+public void removeSession() {
+	
+	request.getSession().removeAttribute("betDetail");
 }
 
 			

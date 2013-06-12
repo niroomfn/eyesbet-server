@@ -83,11 +83,11 @@ import com.eyesbet.mobile.web.command.EditBetCommand;
          xml = command.execute();
        }
 				
-				else if ("m.editBet".equals(uri)) {
+		else if ("m.editBet".equals(uri)) {
 					
-					command = new EditBetCommand(request);
-					xml = command.execute();
-				}
+			command = new EditBetCommand(request);
+			xml = command.execute();
+		}
      }
      catch (Exception e)
      {
@@ -98,6 +98,7 @@ import com.eyesbet.mobile.web.command.EditBetCommand;
      response.setHeader("Cache-Control", "no-cache");
  
      response.getWriter().write(xml);
+     response.getWriter().flush();
      response.getWriter().close();
    }
  

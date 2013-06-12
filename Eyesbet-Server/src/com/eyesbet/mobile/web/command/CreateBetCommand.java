@@ -2,7 +2,6 @@
  
  import com.eyesbet.business.domain.Bet;
  import com.eyesbet.business.domain.BetType;
-import com.eyesbet.business.domain.Bets;
  import com.eyesbet.business.domain.Fixtures.Leagues;
  import com.eyesbet.business.domain.Game;
  import com.eyesbet.business.domain.Team;
@@ -64,7 +63,7 @@ import com.eyesbet.business.domain.Bets;
    }
 
 
-           private void createBetForEdit() {
+     private void createBetForEdit() {
         	   
         	   Bet bet = new Bet(BetType.parlay, 0);
         	   

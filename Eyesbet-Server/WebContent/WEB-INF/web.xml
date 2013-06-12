@@ -157,6 +157,11 @@
 		<url-pattern>/m.trackBet</url-pattern>
 	</servlet-mapping>
 	
+		<servlet-mapping>
+		<servlet-name>mobileController</servlet-name>
+		<url-pattern>/m.editBet</url-pattern>
+	</servlet-mapping>
+	
 	<servlet-mapping>
 		<servlet-name>mobileController</servlet-name>
 		<url-pattern>/m.cancelTrackBet</url-pattern>
@@ -178,7 +183,7 @@
 	
 	<session-config>
 	 <session-timeout>
-	  1
+	  5
 	 </session-timeout>
 	</session-config>
 	

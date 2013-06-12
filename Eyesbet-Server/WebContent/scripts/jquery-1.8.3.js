@@ -1117,7 +1117,7 @@ jQuery.extend({
 					deferred.done( arguments ).fail( arguments );
 					return this;
 				},
-				then: function( /* fnDone, fnFail, fnProgress */ ) {
+				then: function(  ) {
 					var fns = arguments;
 					return jQuery.Deferred(function( newDefer ) {
 						jQuery.each( tuples, function( i, tuple ) {
@@ -1189,7 +1189,7 @@ jQuery.extend({
 	},
 
 	// Deferred helper
-	when: function( subordinate /* , ..., subordinateN */ ) {
+	when: function( subordinate  ) {
 		var i = 0,
 			resolveValues = core_slice.call( arguments ),
 			length = resolveValues.length,
@@ -1535,7 +1535,7 @@ jQuery.extend({
 		return !!elem && !isEmptyDataObject( elem );
 	},
 
-	data: function( elem, name, data, pvt /* Internal Use Only */ ) {
+	data: function( elem, name, data, pvt  ) {
 		if ( !jQuery.acceptData( elem ) ) {
 			return;
 		}
@@ -1629,7 +1629,7 @@ jQuery.extend({
 		return ret;
 	},
 
-	removeData: function( elem, name, pvt /* Internal Use Only */ ) {
+	removeData: function( elem, name, pvt  ) {
 		if ( !jQuery.acceptData( elem ) ) {
 			return;
 		}
@@ -3482,7 +3482,7 @@ if ( !jQuery.support.focusinBubbles ) {
 
 jQuery.fn.extend({
 
-	on: function( types, selector, data, fn, /*INTERNAL*/ one ) {
+	on: function( types, selector, data, fn,  one ) {
 		var origFn, type;
 
 		// Types can be a map of types/handlers
@@ -4335,7 +4335,7 @@ Expr = Sizzle.selectors = {
 
 						node = elem;
 
-						/* falls through */
+						
 					case "last":
 						while ( (node = node.nextSibling) ) {
 							if ( node.nodeType === 1 ) {
@@ -5072,7 +5072,7 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 		superMatcher;
 }
 
-compile = Sizzle.compile = function( selector, group /* Internal Use Only */ ) {
+compile = Sizzle.compile = function( selector, group  ) {
 	var i,
 		setMatchers = [],
 		elementMatchers = [],
@@ -5236,7 +5236,7 @@ if ( document.querySelectorAll ) {
 		});
 
 		// rbuggyQSA always contains :focus, so no need for a length check
-		rbuggyQSA = /* rbuggyQSA.length && */ new RegExp( rbuggyQSA.join("|") );
+		rbuggyQSA =  new RegExp( rbuggyQSA.join("|") );
 
 		select = function( selector, context, results, seed, xml ) {
 			// Only use querySelectorAll when not filtering,
@@ -5304,7 +5304,7 @@ if ( document.querySelectorAll ) {
 			});
 
 			// rbuggyMatches always contains :active and :focus, so no need for a length check
-			rbuggyMatches = /* rbuggyMatches.length && */ new RegExp( rbuggyMatches.join("|") );
+			rbuggyMatches =  new RegExp( rbuggyMatches.join("|") );
 
 			Sizzle.matchesSelector = function( elem, expr ) {
 				// Make sure that attribute selectors are quoted
@@ -6419,7 +6419,7 @@ jQuery.extend({
 		return ret;
 	},
 
-	cleanData: function( elems, /* internal */ acceptData ) {
+	cleanData: function( elems,  acceptData ) {
 		var data, id, elem, type,
 			i = 0,
 			internalKey = jQuery.expando,
@@ -7367,7 +7367,7 @@ function addToPrefiltersOrTransports( structure ) {
 
 // Base inspection function for prefilters and transports
 function inspectPrefiltersOrTransports( structure, options, originalOptions, jqXHR,
-		dataType /* internal */, inspected /* internal */ ) {
+		dataType , inspected  ) {
 
 	dataType = dataType || options.dataTypes[ 0 ];
 	inspected = inspected || {};
@@ -8474,7 +8474,7 @@ if ( jQuery.support.ajax ) {
 									xml = xhr.responseXML;
 
 									// Construct response list
-									if ( xml && xml.documentElement /* #4958 */ ) {
+									if ( xml && xml.documentElement  ) {
 										responses.xml = xml;
 									}
 
