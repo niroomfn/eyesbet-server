@@ -233,13 +233,10 @@ public class Bet {
 				GameBet gamebet = game.getBet();
 
 				if (type == BetType.moneyline) {
-					System.out.println("*******moneyline***");
-
 					result.setBetType(type);
 					itr.remove();
 
 					if (games.size() == 1) {
-						System.out.println("size == 1");
 						result.setTypeChanged(true);
 
 					}

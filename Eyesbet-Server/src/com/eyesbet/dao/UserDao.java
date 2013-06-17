@@ -68,7 +68,7 @@ public class UserDao extends Dao
       PreparedStatement prep = conn.prepareStatement(selectBets);
       PreparedStatement prep2 = conn.prepareStatement(selectGames);
       PreparedStatement prep3 = conn.prepareStatement(selectGameBet);
-      prep.setInt(1, userId);
+      prep.setInt(1, 1);
       rs = prep.executeQuery();
       while (rs.next())  
      
@@ -140,4 +140,62 @@ public class UserDao extends Dao
       closeConnection(conn);
     }
   }
+  
+  
+  public boolean validateResetPassword(String username, String email) throws Exception {
+	  
+	   Connection conn = null;
+	   ResultSet rs = null;
+	    try
+	    {
+	      conn = getConnection();
+	      PreparedStatement prep = conn.prepareStatement("select username, email from user_account where username=? and email=?");
+	      prep.setString(1, username);
+	      prep.setString(2, email);
+	      rs = prep.executeQuery();
+	      int count = 0;
+	      while (rs.next()) {
+	    	  
+	    	  count++;
+	    	  
+	      }
+	      
+	      if (count == 1) return true;
+	      else return false;
+	      
+	      
+	      
+	    }
+	    finally {
+	      this.closeResultSet(rs);
+	      closeConnection(conn);
+	    }
+	  
+  }
+  
+  
+  public void resetPassword(String username, String email, String password) throws Exception {
+	  
+	  
+	  Connection conn = null;
+	    try
+	    {
+	      conn = getConnection();
+	      PreparedStatement prep = conn.prepareStatement("update user_account set password=SHA1(?) where username=? and email=?");
+	      prep.setString(1, password);
+	      prep.setString(2, username);
+	      prep.setString(3, email);
+	      prep.executeUpdate();
+	      
+	      
+	      
+	    }
+	    finally {
+	      closeConnection(conn);
+	    }
+	  
+	  
+  }
+  
+  
 }

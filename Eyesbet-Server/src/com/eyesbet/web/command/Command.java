@@ -1,8 +1,11 @@
  package com.eyesbet.web.command;
  
- import com.eyesbet.business.domain.BetType;
- import com.eyesbet.business.domain.User;
- import javax.servlet.http.HttpServletRequest;
+ import com.eyesbet.business.domain.Bet;
+import com.eyesbet.business.domain.BetType;
+import com.eyesbet.business.domain.Bets;
+import com.eyesbet.business.domain.User;
+
+import javax.servlet.http.HttpServletRequest;
  
  public abstract class Command
  {
@@ -30,6 +33,15 @@
      }
      return user.getId();
    }
+   
+   
+   protected Bet getBet(int betId) {
+	   
+		Bets bets = (Bets)request.getSession().getAttribute("bets");
+		
+		return bets.getBet(betId);
+   }
+   
  }
 
 /* Location:           C:\Users\farbod.niroomand.cor\Desktop\eyesbetwar\classes\

@@ -55,7 +55,7 @@
  
    private String buildXml(Bet bet)
    {
-     this.xmlResponse.append("<xml name='"+bet.getName()+"' betid='" + bet.getId() + "' type='"+bet.getBetType().getShortName()+"' >");
+     this.xmlResponse.append("<xml st='"+bet.getStatusText()+"' name='"+bet.getName()+"' betid='" + bet.getId() + "' type='"+bet.getBetType().getShortName()+"' >");
  
      List<Game> list = bet.getGames();
      GameBet gamebet = null;

@@ -91,11 +91,14 @@ import org.apache.log4j.BasicConfigurator;
  
      xml.append("<league n='").append(league.toString()).append("' >");
      Set<Fixture> list = Fixtures.getInstance().getLeagueFixtures(league);
+     if (list != null) {
      for (Fixture f : list) {
        xml.append("<fixture id='").append(f.getFixtureId()).append("'");
        xml.append(" h='").append(f.getHome()).append("'");
        xml.append(" a='").append(f.getAway()).append("'");
        xml.append(" s='").append(f.getSchedule()).append("' />");
+     }
+     
      }
  
      xml.append("</league></fixtures>");

@@ -3,14 +3,14 @@
  import com.eyesbet.business.domain.Bet;
 import com.eyesbet.business.domain.BetType;
 import com.eyesbet.business.domain.DeleteBetResult;
- import com.eyesbet.business.domain.Game;
- import com.eyesbet.business.domain.GameBet;
- import java.sql.Connection;
- import java.sql.PreparedStatement;
- import java.sql.ResultSet;
- import java.sql.SQLException;
- import java.util.List;
- import java.util.Set;
+import com.eyesbet.business.domain.Game;
+import com.eyesbet.business.domain.GameBet;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Set;
  
  public class BetDao extends Dao
  {
@@ -152,7 +152,7 @@ import com.eyesbet.business.domain.DeleteBetResult;
 
 
 		  public void deleteParlayMoneylineBet(DeleteBetResult result) throws Exception {
-			  				Connection conn = null;
+			  		Connection conn = null;
 			       ResultSet rs = null;
 			       try {
 			         conn = getConnection();
@@ -229,6 +229,31 @@ import com.eyesbet.business.domain.DeleteBetResult;
 			     finally {
 			       closeConnection(conn);
 			      }
+			  
+		  }
+		  
+		  
+		  
+		  public void changeBetName(int betId, String name) throws Exception {
+			  
+			  Connection conn = null;
+		       try {
+		         conn = getConnection();
+		         PreparedStatement prep = conn
+		           .prepareStatement("update bets set bet_name=? where id=?");
+		        
+				  		  prep.setString(1, name);
+				  		  prep.setInt(2, betId);
+				  		  
+				  		  prep.execute();
+				  		  
+				  		
+				  
+		       }
+		       finally {
+		         closeConnection(conn);
+		       }
+			  
 			  
 		  }
 

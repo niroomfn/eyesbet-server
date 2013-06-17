@@ -9,7 +9,7 @@
 	 <filter-class>com.eyesbet.web.listeners.SessionAuthenticationFilter</filter-class>
 	 <init-param>
 	 <param-name>allowedRequests</param-name>
-	 <param-value>/m.login,/m.register</param-value>
+	 <param-value>/m.login,/m.register,/m.resetPassword</param-value>
 	 </init-param>
 	  <init-param>
 	 <param-name>loginPage</param-name>
@@ -167,6 +167,11 @@
 		<url-pattern>/m.cancelTrackBet</url-pattern>
 	</servlet-mapping>
 	
+		<servlet-mapping>
+		<servlet-name>mobileController</servlet-name>
+		<url-pattern>/m.addBet</url-pattern>
+	</servlet-mapping>
+	
 	<servlet-mapping>
 		<servlet-name>MonitorServlet</servlet-name>
 		<url-pattern>/m.monitorBet</url-pattern>
@@ -174,6 +179,11 @@
 	<servlet-mapping>
 		<servlet-name>LiveGameServlet</servlet-name>
 		<url-pattern>/m.livegame</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>mobileController</servlet-name>
+		<url-pattern>/m.resetPassword</url-pattern>
 	</servlet-mapping>
 	
 	 <filter-mapping>

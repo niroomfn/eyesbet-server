@@ -1,15 +1,15 @@
  package com.eyesbet.business;
  
  import com.eyesbet.business.domain.Bet;
- import com.eyesbet.business.domain.Bets;
- import com.eyesbet.business.domain.Game;
- import com.eyesbet.business.domain.SortedGames;
- import com.eyesbet.business.domain.User;
- import com.eyesbet.dao.BetDao;
- import com.eyesbet.dao.UserDao;
- import java.util.Iterator;
- import java.util.List;
- import java.util.Set;
+import com.eyesbet.business.domain.Bets;
+import com.eyesbet.business.domain.Game;
+import com.eyesbet.business.domain.SortedGames;
+import com.eyesbet.business.domain.User;
+import com.eyesbet.dao.BetDao;
+import com.eyesbet.dao.UserDao;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
  
  public class Service
  {
@@ -68,6 +68,27 @@
  
      return sgames;
    }
+   
+   
+   public void changeBetName(int betId, String name) throws Exception {
+	   
+	   betDao.changeBetName(betId, name);
+	   
+   }
+   
+   
+   public boolean validateResetPassword(String username, String email) throws Exception {
+	   
+	   
+	   return dao.validateResetPassword(username, email);
+	   
+   }
+   
+   public void resetUserPassword(String username, String email, String password	) throws Exception {
+	   
+	   dao.resetPassword(username, email, password);
+   }
+   
  }
 
 

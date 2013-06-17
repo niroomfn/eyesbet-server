@@ -1,23 +1,25 @@
  package com.eyesbet.mobile.web.servlets;
  
- import com.eyesbet.mobile.web.command.BetDetailCommand;
- import com.eyesbet.mobile.web.command.CancelTrackBetCommand;
- import com.eyesbet.mobile.web.command.CreateBetCommand;
- import com.eyesbet.mobile.web.command.DisplayMobileBetsCommand;
+ import com.eyesbet.mobile.web.command.AddBetCommand;
+import com.eyesbet.mobile.web.command.BetDetailCommand;
+import com.eyesbet.mobile.web.command.CancelTrackBetCommand;
+import com.eyesbet.mobile.web.command.CreateBetCommand;
+import com.eyesbet.mobile.web.command.DisplayMobileBetsCommand;
 import com.eyesbet.mobile.web.command.EditBetCommand;
- import com.eyesbet.mobile.web.command.LoginCommand;
- import com.eyesbet.mobile.web.command.MobileCommand;
- import com.eyesbet.mobile.web.command.RegisterCommand;
- import com.eyesbet.mobile.web.command.RemoveBetCommand;
- import com.eyesbet.mobile.web.command.SaveBetCommand;
- import com.eyesbet.mobile.web.command.StreamBetCommand;
- import java.io.IOException;
- import javax.servlet.ServletException;
- import javax.servlet.http.HttpServlet;
- import javax.servlet.http.HttpServletRequest;
- import javax.servlet.http.HttpServletResponse;
- import org.apache.log4j.BasicConfigurator;
- import org.apache.log4j.Logger;
+import com.eyesbet.mobile.web.command.LoginCommand;
+import com.eyesbet.mobile.web.command.MobileCommand;
+import com.eyesbet.mobile.web.command.RegisterCommand;
+import com.eyesbet.mobile.web.command.RemoveBetCommand;
+import com.eyesbet.mobile.web.command.ResetPasswordCommand;
+import com.eyesbet.mobile.web.command.SaveBetCommand;
+import com.eyesbet.mobile.web.command.StreamBetCommand;
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
  
  public class MobileController extends HttpServlet
  {
@@ -87,6 +89,16 @@ import com.eyesbet.mobile.web.command.EditBetCommand;
 					
 			command = new EditBetCommand(request);
 			xml = command.execute();
+		} else if ("m.addBet".equals(uri)) {
+			
+			command = new AddBetCommand(request);
+			xml = command.execute();
+			
+		} else if ("m.resetPassword".equals(uri)) {
+			
+			command = new ResetPasswordCommand(request);
+			xml = command.execute();
+			
 		}
      }
      catch (Exception e)

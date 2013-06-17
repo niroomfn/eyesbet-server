@@ -35,26 +35,19 @@
        for (String g : games)
        {
          teams = g.split("@");
- 
          game = new Game(new Team(0, teams[1]), new Team(0, teams[0]), Leagues.valueOf(teams[4]));
          game.setId(Integer.parseInt(teams[3]));
          game.setSchedule(teams[2]);
          bet.addGame(game);
        }
  
-       buildXml(bet,"");
- 
-       this.request.getSession().setAttribute("bet", bet);
+      saveBet(bet);
  
        return "";
-     } else if ("editBet".equals(cmd)) {
-	
-	            createBetForEdit();
-	
-				}
+     } 
     
 
-			if ("getBet".equals(cmd))
+     else if ("getBet".equals(cmd))
      {
        return ((Bet)this.request.getSession().getAttribute("bet")).getXml();
      }
@@ -63,30 +56,13 @@
    }
 
 
-     private void createBetForEdit() {
-        	   
-        	   Bet bet = new Bet(BetType.parlay, 0);
-        	   
-        	   String[] games = this.request.getParameter("games").split(",");
-        	         
-        	          Game game = null;
-        	          String[] teams = null;
-        	          for (String g : games)
-        	          {
-        	            teams = g.split("@");
-        	    
-        	            game = new Game(new Team(0, teams[1]), new Team(0, teams[0]), Leagues.valueOf(teams[4]));
-        	            game.setId(Integer.parseInt(teams[3]));
-        	            game.setSchedule(teams[2]);
-        	            bet.addGame(game);
-        	          }
-        	    
-        	          buildXml(bet,request.getParameter("betType"));
-        	    
-        	          this.request.getSession().setAttribute("bet", bet);
-        	   
-           }
-			
+   public void saveBet(Bet bet) {
+	   
+	   buildXml(bet,"");
+	   
+       this.request.getSession().setAttribute("bet", bet);
+ 
+   }
  
    private void buildXml(Bet bet, String betType)
    {
