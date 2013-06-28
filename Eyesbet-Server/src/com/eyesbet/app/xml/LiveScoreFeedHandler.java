@@ -72,8 +72,7 @@
  
      for (Game g : this.games)
      {
-       if ((g.getGameId() == game.getGameId()) && (g.getHome().getName().equals(game.getHome().getName())) && 
-         (g.getAway().getName().equals(game.getAway().getName())))
+       if ((g.getGameId() == game.getGameId()))
        {
          g.getHome().setScore(game.getHome().getScore());
          g.getAway().setScore(game.getAway().getScore());
@@ -84,7 +83,3 @@
    }
  }
 
-/* Location:           C:\Users\farbod.niroomand.cor\Desktop\eyesbetwar\classes\
- * Qualified Name:     com.eyesbet.app.xml.LiveScoreFeedHandler
- * JD-Core Version:    0.6.2
- */

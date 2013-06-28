@@ -256,5 +256,90 @@ import java.util.Set;
 			  
 			  
 		  }
+		  
+		/**
+		 *   
+		 * @param bet
+		 * @throws Exception 
+		 */
+		public void updateBet(Bet bet) throws Exception {
+			  Connection conn = null;
+		       ResultSet rs = null;
+		       List<Game> games = bet.getGames();
+		       GameBet gamebet = null;
+		       try {
+		         conn = getConnection();
+		         conn.setAutoCommit(false);
+		         PreparedStatement prep = conn.prepareStatement("select id from game where id=?");
+		         PreparedStatement prep2 = conn.prepareStatement("update bets set bet_type=? where id=?" );
+		         
+		         PreparedStatement prep3 = conn.prepareStatement("update game_bet set over_points=?, under_points=?, spread_point_team=?, spread_point=?, spread_point_favorite=?, money_line=? where id=? and game_id=?");
+		         PreparedStatement prep4 = conn.prepareStatement("insert into game (id,bet_id,home,away,league,schedule) values(?,?,?,?,?,?)");
+		         PreparedStatement prep5 = conn.prepareStatement("insert into game_bet (game_id,bet_id,bet_type,over_points,under_points,spread_point_team,spread_point,spread_point_favorite,money_line) values(?,?,?,?,?,?,?,?,?)");
+
+		         prep2.setString(1, bet.getBetType().toString());
+		         prep2.setInt(2, bet.getId());
+		         prep2.execute();
+		         prep2.close();
+		         for (Game game: games) {
+					 gamebet = game.getBet();
+					 prep.setInt(1, game.getGameId());
+					 rs = prep.executeQuery();
+					 if (rs.next() == false) {
+						 
+						 prep4.setInt(1, game.getGameId());
+						 prep4.setInt(2, bet.getId());
+						 prep4.setString(3, game.getHome().getName());
+						 prep4.setString(4, game.getAway().getName());
+						 prep4.setString(5, game.getLeage().toString());
+						 prep4.setString(6, game.getSchedule());
+						 prep4.execute();
+						 
+						 prep5.setInt(1, game.getGameId());
+						 prep5.setInt(2, bet.getId());
+						 prep5.setString(3, "");
+						 prep5.setString(4, gamebet.getOverPoints());
+						 prep5.setString(5, gamebet.getUnderPoints());
+						 prep5.setString(6, gamebet.getSpreadPointTeam());
+						 prep5.setString(7, gamebet.getSpreadPoint());
+						 prep5.setString(8, gamebet.getSpreadPointFavorite());
+						 prep5.setString(9, gamebet.getMoneyline());
+						 prep5.execute();
+					 
+					 
+					 } else {
+						 System.out.println("BetDao.... game exitst.........");
+						 prep3.setString(1, gamebet.getOverPoints());
+						 prep3.setString(2, gamebet.getUnderPoints());
+						 prep3.setString(3, gamebet.getSpreadPointTeam());
+						 prep3.setString(4, gamebet.getSpreadPoint());
+						 prep3.setString(5, gamebet.getSpreadPointFavorite());
+						 prep3.setString(6, gamebet.getMoneyline());
+						 prep3.setInt(7, gamebet.getId());
+						 prep3.setInt(8, game.getGameId());
+						 prep3.execute();
+					 }
+					 
+					 rs.close();
+				 }
+		         
+		         prep2.close();
+		         prep3.close();
+		         prep4.close();
+		         prep5.close();
+		         
+		         conn.commit();
+				  
+		       }
+		       
+		       
+		       finally {
+		         closeResultSet(rs);
+		         closeConnection(conn);
+		       }
+			  
+			  
+			  
+		  }
 
 }

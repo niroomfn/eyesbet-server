@@ -100,7 +100,3 @@
    }
  }
 
-/* Location:           C:\Users\farbod.niroomand.cor\Desktop\eyesbetwar\classes\
- * Qualified Name:     com.eyesbet.web.command.DisplayBetsCommand
- * JD-Core Version:    0.6.2
- */

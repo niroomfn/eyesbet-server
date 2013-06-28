@@ -1,63 +1,69 @@
  package com.eyesbet.mobile.web.command;
  
- import com.eyesbet.business.domain.Bet;
- import com.eyesbet.business.domain.BetType;
- import com.eyesbet.business.domain.Game;
- import com.eyesbet.business.domain.GameBet;
- import com.eyesbet.dao.BetDao;
- import java.util.Iterator;
- import java.util.List;
- import javax.servlet.http.HttpServletRequest;
+ import com.eyesbet.business.Service;
+import com.eyesbet.business.domain.Bet;
+import com.eyesbet.business.domain.BetType;
+import com.eyesbet.business.domain.Game;
+import com.eyesbet.business.domain.GameBet;
+import com.eyesbet.dao.BetDao;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
  
  public class SaveBetCommand extends MobileCommand
  {
-   public SaveBetCommand(HttpServletRequest request)
+  
+	 private boolean editMode = false;
+	 public SaveBetCommand(HttpServletRequest request)
    {
      super(request);
+     
+     if (request.getParameter("editBet") != null) {
+    	 editMode = true;
+     }
    }
  
-   public String execute()
-     throws Exception
+   public String execute() throws Exception
    {
      String betType = this.request.getParameter("betType");
  
      Bet bet = (Bet)this.request.getSession().getAttribute("bet");
      String name = this.request.getParameter("betName");
-     if (name == null) name = betType;
      bet.setName(name);
      List<Game> list = bet.getGames();
-     Iterator<Game> localIterator;
     
-			if (bet.getBetType() == BetType.straightWages) {
+   if (bet.getBetType() == BetType.straightWages) {
        GameBet gamebet = null;
-       Game game = null;
        if (betType.equals(BetType.moneyline.toString())) {
          String userInput = null;
-         for (localIterator = list.iterator(); localIterator.hasNext(); ) { 
-					game = (Game)localIterator.next();
- 
+         for (Game game: list ) { 
+					
            userInput = getGameMoneylineParameter(""+game.getGameId());
            gamebet = new GameBet(0);
            gamebet.setMoneyline(userInput);
-           game.setBet(gamebet); }
+           game.setBet(gamebet);
+           
+         }
        }
        else if (betType.equals(BetType.points.toString()))
        {
          for (Game g : list) {
            gamebet = setupPointsBet(g);
            g.setBet(gamebet);
+           
+           if (gamebet.isOverUnder() && gamebet.isSpreadPoint()) {
+        	   
+        	   bet.setBetType(BetType.parlay);
+           }
          }
        }
      }
      else if (bet.getBetType() == BetType.parlay)
      {
        GameBet gamebet = null;
-       Game game = null;
        if (betType.equals(BetType.moneyline.toString())) {
          String userInput = null;
-         for (localIterator = list.iterator(); localIterator.hasNext(); ) { 
-				game = (Game)localIterator.next();
- 
+         for (Game game: list ) { 
+				
            userInput = getGameMoneylineParameter(""+game.getGameId());
            gamebet = new GameBet(0);
            gamebet.setMoneyline(userInput);
@@ -73,11 +79,27 @@
        }
  
      }
- 
-     BetDao dao = new BetDao();
-     dao.saveBet(getUserId(), bet);
-     this.xmlResponse.append("<success />");
-     return this.xmlResponse.toString();
+   	 
+   	BetDao dao = new BetDao();
+     
+     if (editMode == false) {
+	     dao.saveBet(getUserId(), bet);
+	     return "<result value='success' edit='false' />";
+     } else {
+    	 Bet obet = getBet(Integer.parseInt(request.getParameter("betId")));
+    	Service service = new Service();
+    	boolean result = service.mergeBets(obet, bet);
+    	
+    	if (result == false) {
+    		
+    		return "<result value='invalid' edit='true' />";
+    	}
+    	refreshBet(obet);
+	     dao.updateBet(obet);
+    	 
+    	 return "<result value='success' edit='true' />";
+     }
+     
    }
  
    private GameBet setupPointsBet(Game game)
@@ -121,9 +143,35 @@
  
      return gamebet;
    }
+
+
+	private void refreshBet(Bet bet) {
+		
+		List<Game> list = bet.getGames();
+		if (list.size() == 1 ) {
+			
+			Game game = list.get(0);
+			if (game.getBet().isMoneyline()) {
+				bet.setBetType(BetType.straightWages);
+			} else {
+				
+				if (game.getBet().isOverUnder() && game.getBet().isSpreadPoint()) {
+					
+					bet.setBetType(BetType.parlay);
+				}
+				
+			}
+			
+			
+		} else {
+			
+			bet.setBetType(BetType.parlay);
+			
+			
+		}
+		
+	}
+   
+   
  }
 
-/* Location:           C:\Users\farbod.niroomand.cor\Desktop\eyesbetwar\classes\
- * Qualified Name:     com.eyesbet.mobile.web.command.SaveBetCommand
- * JD-Core Version:    0.6.2
- */

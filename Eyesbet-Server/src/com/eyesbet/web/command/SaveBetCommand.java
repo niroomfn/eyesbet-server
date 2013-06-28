@@ -4,12 +4,10 @@
  import com.eyesbet.business.domain.BetType;
  import com.eyesbet.business.domain.Game;
  import com.eyesbet.business.domain.GameBet;
- import com.eyesbet.business.domain.Team;
  import com.eyesbet.dao.BetDao;
  import java.util.Iterator;
  import java.util.List;
  import javax.servlet.http.HttpServletRequest;
- import javax.servlet.http.HttpSession;
  
  public class SaveBetCommand extends Command
  {
@@ -25,13 +23,16 @@
  
      Bet bet = (Bet)this.request.getSession().getAttribute("bet");
      List<Game> list = bet.getGames();
-     Iterator localIterator;
+     Iterator<Game> localIterator;
+     
      if (bet.getBetType() == BetType.straightWages) {
        GameBet gamebet = null;
        Game game = null;
+       
        if (betType.equals(BetType.moneyline.toString())) {
          String userInput = null;
-         for (localIterator = list.iterator(); localIterator.hasNext(); ) { game = (Game)localIterator.next();
+         for (localIterator = list.iterator(); localIterator.hasNext(); ) { 
+        	 game = localIterator.next();
  
            userInput = getGameMoneylineParameter(game.getGameBetName());
            gamebet = new GameBet(0);
@@ -42,7 +43,7 @@
        {
          for (Game g : list) {
            gamebet = setupPointsBet(g);
-           game.setBet(gamebet);
+           g.setBet(gamebet);
          }
        }
      }
@@ -63,7 +64,7 @@
        {
          for (Game g : list) {
            gamebet = setupPointsBet(g);
-           game.setBet(gamebet);
+           g.setBet(gamebet);
          }
  
        }

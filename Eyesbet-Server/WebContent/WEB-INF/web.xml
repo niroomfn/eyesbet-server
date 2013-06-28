@@ -9,12 +9,13 @@
 	 <filter-class>com.eyesbet.web.listeners.SessionAuthenticationFilter</filter-class>
 	 <init-param>
 	 <param-name>allowedRequests</param-name>
-	 <param-value>/m.login,/m.register,/m.resetPassword</param-value>
+	 <param-value>/m.login,/m.register,/m.resetPassword,/m.startup</param-value>
 	 </init-param>
 	  <init-param>
 	 <param-name>loginPage</param-name>
 	 <param-value>/displayLeagues</param-value>
 	 </init-param>
+	
 	</filter>
 	<servlet>
 		<description>
@@ -22,6 +23,7 @@
 		<display-name>Controller</display-name>
 		<servlet-name>Controller</servlet-name>
 		<servlet-class>com.eyesbet.web.servlets.Controller</servlet-class>
+		
 	</servlet>
 	
 	<servlet>
@@ -53,6 +55,15 @@
 		<display-name>LiveGameServlet</display-name>
 		<servlet-name>LiveGameServlet</servlet-name>
 		<servlet-class>com.eyesbet.web.servlets.LiveGameServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>StartupServlet</display-name>
+		<servlet-name>StartupServlet</servlet-name>
+		<servlet-class>com.eyesbet.web.servlets.StartupServlet</servlet-class>
+		
+		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Controller</servlet-name>
@@ -184,6 +195,10 @@
 	<servlet-mapping>
 		<servlet-name>mobileController</servlet-name>
 		<url-pattern>/m.resetPassword</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>StartupServlet</servlet-name>
+		<url-pattern>/m.startup</url-pattern>
 	</servlet-mapping>
 	
 	 <filter-mapping>

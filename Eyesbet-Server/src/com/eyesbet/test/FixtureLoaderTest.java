@@ -23,7 +23,7 @@ public class FixtureLoaderTest {
 			fixture.setAway("Away_"+i);
 			fixture.setHome("home_"+i);
 			fixture.setId(i);
-			fixture.setSchedule("06-12-2013 0"+(i+1)+":00:00 PM");
+			fixture.setSchedule("06-12-2013 0"+(i+1)+":00 PM");
 			
 			list.add(fixture);
 			

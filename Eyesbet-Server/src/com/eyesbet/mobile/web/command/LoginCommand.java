@@ -14,20 +14,18 @@
    public String execute()
      throws Exception
    {
+	 boolean valid = false;
      User user = Service.login(this.request.getParameter("username"), this.request.getParameter("password"));
  
      if (user != null) {
-       this.request.getSession().setAttribute("user", user);
-       this.xmlResponse.append("<user f='").append(user.getFirstName()).append("' l='")
-         .append(user.getLastName()).append("' />");
-       return this.xmlResponse.toString();
+    	 valid = true;
+         this.request.getSession().setAttribute("user", user);
+
      }
+     
+     this.xmlResponse.append("<user valid='"+valid+"' />");
  
      return this.xmlResponse.toString();
    }
  }
 
-/* Location:           C:\Users\farbod.niroomand.cor\Desktop\eyesbetwar\classes\
- * Qualified Name:     com.eyesbet.mobile.web.command.LoginCommand
- * JD-Core Version:    0.6.2
- */

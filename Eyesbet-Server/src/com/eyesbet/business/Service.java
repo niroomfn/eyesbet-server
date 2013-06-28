@@ -89,6 +89,56 @@ import java.util.Set;
 	   dao.resetPassword(username, email, password);
    }
    
+   
+   public boolean mergeBets(Bet obet, Bet nbet) throws Exception {
+	   
+	   if (obet == null || nbet == null) {
+		   
+		   throw new Exception("Unable to merge bets");
+	 
+	   }
+		   
+		   List<Game> newList = nbet.getGames();
+		   List<Game> olist = obet.getGames();
+		   int index = 0;
+		   for (Game game: newList) {
+			   
+			   if ((index = olist.indexOf(game)) >= 0) {				   
+				   olist.get(index).updateBet(game.getBet());
+				   
+			   } else {
+				   
+				   olist.add(game);
+			   }
+			   
+		   }
+		   
+		   
+		   boolean moneyline = false;
+		   boolean points = false;
+		   for (Game game: olist) {
+			   
+			   if (game.getBet().isMoneyline()) {
+				    moneyline = true;
+				   
+			   } else {
+				   
+				   points = true;
+				   
+			   }
+			   
+		   }
+		   
+		   
+		   if (points == true && moneyline == true) {
+			   
+			   return false;
+		   }
+	
+	   
+	   return true;
+   }
+   
  }
 
 

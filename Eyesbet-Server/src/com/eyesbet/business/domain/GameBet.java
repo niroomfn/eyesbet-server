@@ -150,10 +150,23 @@
  
    public String getSpreadPointAndSign()
    {
+	   
+	  String str = "";
      if (this.spreadPointFavorite.equals(this.spreadPointTeam)) {
-       return "-" + this.spreadPoint;
+       str =  "-" + this.spreadPoint;
+     } else {
+       str = "+" + this.spreadPoint;
      }
-     return "+" + this.spreadPoint;
+     
+     int index = 0;
+     if ((index = str.indexOf(".0")) > 0) {
+    	 
+    	 str = str.substring(0,index );
+     }
+     
+     
+     return str;
+
    }
  
    private String treamTeamName(String team)
@@ -201,7 +214,3 @@
 			
  }
 
-/* Location:           C:\Users\farbod.niroomand.cor\Desktop\eyesbetwar\classes\
- * Qualified Name:     com.eyesbet.business.domain.GameBet
- * JD-Core Version:    0.6.2
- */

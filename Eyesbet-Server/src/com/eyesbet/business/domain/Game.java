@@ -287,20 +287,52 @@
      return this.away.getScore();
    }
  
-   public double getSpreadPointBetScore()
+   public String getSpreadPointBetScore()
    {
-     if (this.home.getName().equals(this.bet.getSpreadPointTeam()))
+	   
+	   String str = "";
+	   
+	   if (this.home.getName().equals(this.bet.getSpreadPointTeam()))
      {
-       return this.home.getBetScore();
-     }
+    	 
+    	 
+       str = this.home.getBetScore() + "";
+     } else {
  
-     return this.away.getBetScore();
+       str = this.away.getBetScore() + "";
+     }
+       int index = 0;
+       if (( index = str.indexOf(".0")) > 0) {
+    	   return str.substring(0, index);
+       } else {
+    	   
+    	   return str;
+       }
+     
    }
  
    public int getOverUnderBetScore()
    {
      return this.away.getScore() + this.home.getScore();
    }
+   
+   
+   
+   public void updateBet(GameBet bet) {
+	   
+	   
+	  this.bet.setMoneyline(bet.getMoneyline());
+	  this.bet.setName(bet.getName());
+	  this.bet.setOverPoints(bet.getOverPoints());
+	  this.bet.setSpreadPoint(bet.getSpreadPoint());
+	  this.bet.setSpreadPointFavorite(bet.getSpreadPointFavorite());
+	  this.bet.setSpreadPointTeam(bet.getSpreadPointTeam());
+	  this.bet.setTeams(bet.getTeams());
+	  this.bet.setUnderPoints(bet.getUnderPoints());
+	   
+	   
+   }
+   
  
    public static enum StatusType
    {
