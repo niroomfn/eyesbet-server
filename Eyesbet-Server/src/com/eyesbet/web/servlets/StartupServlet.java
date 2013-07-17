@@ -34,7 +34,7 @@ public class StartupServlet extends HttpServlet {
 		
 		//String appVersion = request.getParameter("appVersion");
 		
-		
+		//request.getSession().invalidate();
 		
 		
 		response.setContentType("text/xml");

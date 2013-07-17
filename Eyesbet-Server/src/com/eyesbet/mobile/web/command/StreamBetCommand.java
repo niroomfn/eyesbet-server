@@ -1,19 +1,20 @@
  package com.eyesbet.mobile.web.command;
  
  import com.eyesbet.business.Service;
- import com.eyesbet.business.Tracker;
- import com.eyesbet.business.domain.Bet;
- import com.eyesbet.business.domain.Bets;
- import com.eyesbet.business.domain.Game;
- import com.eyesbet.business.domain.MonitorBet;
- import com.eyesbet.business.domain.SortedGames;
- import java.util.List;
- import java.util.Set;
- import javax.servlet.http.HttpServletRequest;
- import javax.servlet.http.HttpServletResponse;
- import org.apache.log4j.Logger;
+import com.eyesbet.business.Tracker;
+import com.eyesbet.business.domain.Bet;
+import com.eyesbet.business.domain.Bets;
+import com.eyesbet.business.domain.Game;
+import com.eyesbet.business.domain.MonitorBet;
+import com.eyesbet.business.domain.SortedGames;
+import java.util.List;
+import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
  
- public class StreamBetCommand extends MobileCommand
+ @SuppressWarnings("unused")
+public class StreamBetCommand extends MobileCommand
  {
    private static Logger logger = Logger.getLogger(StreamBetCommand.class);
    private HttpServletResponse response;
@@ -40,17 +41,17 @@
            this.xmlResponse.append("<bet n='" + bet.getName() + "' v='" + bet.getId() + "' />");
          }
  
-         Service service = new Service();
+        /* Service service = new Service();
          SortedGames sgames = service.sortByGameStartTime(bets);
          List<Game> games = sgames.getGames();
          this.xmlResponse.append("<games>");
          for (Game g : games)
          {
            this.xmlResponse.append("<game g='" + g.getAway().getName() + " @ " + g.getHome().getName() + "' st='" + SortedGames.getStartTime(g) + "' ");
-           this.xmlResponse.append("bid='" + g.getBetId() + "' bets='" + sgames.getBetNames(g.getGameId()) + "' />");
-         }
+           this.xmlResponse.append("bets='" + sgames.getBetNames(g.getGameId()) + "' />");
+         }*/
  
-         this.xmlResponse.append("</games></bets>");
+         this.xmlResponse.append("</bets>");
  
          return this.xmlResponse.toString();
        }
@@ -89,7 +90,3 @@
    }
  }
 
-/* Location:           C:\Users\farbod.niroomand.cor\Desktop\eyesbetwar\classes\
- * Qualified Name:     com.eyesbet.mobile.web.command.StreamBetCommand
- * JD-Core Version:    0.6.2
- */

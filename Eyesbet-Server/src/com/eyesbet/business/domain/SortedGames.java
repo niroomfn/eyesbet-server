@@ -15,18 +15,20 @@
  
    private List<Game> games = new ArrayList<Game>();
  
-   public void addGame(Game game, String betName)
+   public void addGame(Game game, String betName, int betId)
    {
+	   
+	  String name = betName + "="+betId;
      if (game.isFinished())
        if (!this.games.contains(game))
        {
          this.games.add(game);
-         this.betNames.put(Integer.valueOf(game.getGameId()), betName);
+         this.betNames.put(Integer.valueOf(game.getGameId()), name);
        }
        else
        {
          Game g = (Game)this.games.get(this.games.indexOf(game));
-         String name = (String)this.betNames.get(Integer.valueOf(g.getGameId())) + ";" + betName;
+          name = (String)this.betNames.get(Integer.valueOf(g.getGameId())) + ";" + name;
          this.betNames.put(Integer.valueOf(g.getGameId()), name);
        }
    }

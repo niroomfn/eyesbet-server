@@ -48,6 +48,7 @@ public class UserDao extends Dao
       return null;
     }
     finally {
+      closeResultSet(rs);
       closeConnection(conn);
     }
   }
@@ -68,7 +69,7 @@ public class UserDao extends Dao
       PreparedStatement prep = conn.prepareStatement(selectBets);
       PreparedStatement prep2 = conn.prepareStatement(selectGames);
       PreparedStatement prep3 = conn.prepareStatement(selectGameBet);
-      prep.setInt(1, 1);
+      prep.setInt(1, userId);
       rs = prep.executeQuery();
       while (rs.next())  
      
@@ -121,13 +122,25 @@ public class UserDao extends Dao
     return bets;
   }
 
-  public void register(User user) throws Exception
+  public boolean register(User user) throws Exception
   {
     Connection conn = null;
+    ResultSet rs = null;
     try
     {
       conn = getConnection();
-      PreparedStatement prep = conn.prepareStatement(register);
+      PreparedStatement prep = conn.prepareStatement("select username, password from user_account where username=? and password=SHA1(?)");
+    	
+      prep.setString(1, user.getUsername());
+      prep.setString(2, user.getPassword());
+      rs = prep.executeQuery();
+      
+      if (rs.next()) {
+    	  
+    	  return false;
+      } else {
+    	prep.close();	  
+      prep = conn.prepareStatement(register);
       prep.setString(1, user.getFirstName());
       prep.setString(2, user.getLastName());
       prep.setString(3, user.getUsername());
@@ -135,10 +148,17 @@ public class UserDao extends Dao
       prep.setString(5, user.getCity());
       prep.setString(6, user.getEmail());
       prep.execute();
+      
+      return true;
+      }
     }
     finally {
+     this.closeResultSet(rs);
       closeConnection(conn);
     }
+    
+    
+    
   }
   
   

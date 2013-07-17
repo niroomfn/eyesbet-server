@@ -20,10 +20,10 @@ import java.util.Set;
      return dao.login(username, password);
    }
  
-   public void register(User user)
+   public boolean register(User user)
      throws Exception
    {
-     dao.register(user);
+     return dao.register(user);
    }
  
    public boolean updateGameScores(Game game)
@@ -54,13 +54,13 @@ import java.util.Set;
 			Iterator<Bet> localIterator1 = list.iterator();
      while (localIterator1.hasNext())
      {
-       Bet bet = (Bet)localIterator1.next();
+       Bet bet = localIterator1.next();
        gamelist = bet.getGames();
        localIterator2 = gamelist.iterator();
 			   while (localIterator2.hasNext()) {
 				Game g = (Game)localIterator2.next();
  
-       sgames.addGame(g, bet.getName());
+       sgames.addGame(g, bet.getName(), bet.getId());
      }
 			}
  

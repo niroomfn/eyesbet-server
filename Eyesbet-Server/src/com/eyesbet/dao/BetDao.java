@@ -270,7 +270,7 @@ import java.util.Set;
 		       try {
 		         conn = getConnection();
 		         conn.setAutoCommit(false);
-		         PreparedStatement prep = conn.prepareStatement("select id from game where id=?");
+		         PreparedStatement prep = conn.prepareStatement("select id from game where id=? and bet_id=?");
 		         PreparedStatement prep2 = conn.prepareStatement("update bets set bet_type=? where id=?" );
 		         
 		         PreparedStatement prep3 = conn.prepareStatement("update game_bet set over_points=?, under_points=?, spread_point_team=?, spread_point=?, spread_point_favorite=?, money_line=? where id=? and game_id=?");
@@ -284,6 +284,7 @@ import java.util.Set;
 		         for (Game game: games) {
 					 gamebet = game.getBet();
 					 prep.setInt(1, game.getGameId());
+					 prep.setInt(2, bet.getId());
 					 rs = prep.executeQuery();
 					 if (rs.next() == false) {
 						 

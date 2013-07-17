@@ -47,8 +47,8 @@
    private String getRequestedPage(HttpServletRequest aHttpRequest)
    {
      String url = aHttpRequest.getRequestURI();
-     if (url.indexOf("/") == 0) {
-       return url.substring(1, url.length());
+     if (url.indexOf("/") >= 0) {
+       return url.substring(url.lastIndexOf("/"), url.length());
      }
      return null;
    }

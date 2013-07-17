@@ -5,6 +5,7 @@ import com.eyesbet.business.domain.BetType;
 import com.eyesbet.business.domain.Bets;
 import com.eyesbet.business.domain.Fixtures.Leagues;
 import com.eyesbet.business.domain.Game;
+import com.eyesbet.business.domain.GameBet;
 import com.eyesbet.business.domain.Team;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +51,7 @@ import javax.servlet.http.HttpServletRequest;
        
        boolean lockbetType = false;
        String lockTypeTo = "";
+       StringBuilder entry = new StringBuilder();
        if (request.getParameter("editBet") != null	) {
     	  Bets bets = (Bets) request.getSession().getAttribute("bets");
     	  
@@ -60,12 +62,12 @@ import javax.servlet.http.HttpServletRequest;
     	  int size = olist.size();
     	  List<Game> list = bet.getGames();
     	  int count = 0;
+    	  int index = -1;
     	  for (Game g: list) {
     		  
-    		  if (olist.indexOf(g) >= 0) {
+    		  if ((index = olist.indexOf(g)) >= 0) {
     			  count++;
-    			
-    			  
+    			  createGamebetEntry(entry, olist.get(index).getBet(), g.getGameId());
     		  }
     		  
     	  }
@@ -84,8 +86,8 @@ import javax.servlet.http.HttpServletRequest;
     	   
        }
  
-       saveBet(bet, lockbetType, lockTypeTo );
- 
+       saveBet(bet, lockbetType, lockTypeTo, entry );
+       
        return "";
      } 
     
@@ -99,15 +101,16 @@ import javax.servlet.http.HttpServletRequest;
    }
 
 
-   public void saveBet(Bet bet, boolean lockbetType, String lockTypeTo) {
+   public void saveBet(Bet bet, boolean lockbetType, String lockTypeTo, StringBuilder entry) {
 	   
-	   buildXml(bet,  lockbetType, lockTypeTo);
+	   buildXml(bet,  lockbetType, lockTypeTo, entry);
 	   
        this.request.getSession().setAttribute("bet", bet);
  
    }
  
-   private void buildXml(Bet bet, boolean lockbetType, String lockTypeTo)
+   private void buildXml(Bet bet, boolean lockbetType, 
+		   String lockTypeTo, StringBuilder entry)
    {
      
 	 this.xmlResponse.append("<bet type='").append(bet.getBetType())
@@ -115,11 +118,18 @@ import javax.servlet.http.HttpServletRequest;
      List<Game> list = bet.getGames();
      for (Game game : list)
      {
+      
        this.xmlResponse.append("<game a='").append(game.getAway().getName()).append("'");
        this.xmlResponse.append(" h='").append(game.getHome().getName()).append("'");
-       this.xmlResponse.append(" id='").append(game.getGameId()).append("' />");
+       this.xmlResponse.append(" id='").append(game.getGameId()).append("'  />");
+       
      }
- 
+     if (entry.length() > 0) {
+    	 
+    	 xmlResponse.append("<entries>");
+    	 xmlResponse.append(entry);
+    	 xmlResponse.append("</entries>");
+     }
      this.xmlResponse.append("</bet>");
      bet.setXml(this.xmlResponse.toString());
    }
@@ -131,6 +141,45 @@ public boolean isEditBet() {
 public void setEditBet(boolean editBet) {
 	this.editBet = editBet;
 }
+
+ /**
+  * 
+  * @param sb
+  * @param gamebet
+  * @param gameId
+  */
+ private void createGamebetEntry(StringBuilder sb, GameBet gamebet, int gameId) {
+	 
+	 
+	 
+	 if (gamebet.isMoneyline()) {
+	 
+		 sb.append("<entry gameid='"+gameId+"' mn='"+gamebet.getMoneyline()+ "' /> ");
+		
+		 
+	 } else {
+		 
+		 sb.append("<entry gameid='"+gameId+"' sp='"+gamebet.getSpreadPointAndSign()+"' spteam='"+gamebet.getSpreadPointTeam()+"' ");
+		 
+		 
+		 if (gamebet.isOverUnder()) {
+			 
+			 if (gamebet.isOver()) {
+				 
+				 sb.append("oupoints='"+gamebet.getOverPoints()+"' ou='o' />");
+			 } else {
+				 
+				 sb.append("oupoints='"+gamebet.getUnderPoints()+"' ou='u' />");
+			 }
+		 } else {
+			 
+			 sb.append("ou='' />");
+		 }
+		 
+	 }
+	 
+	 
+ }
    
    
    

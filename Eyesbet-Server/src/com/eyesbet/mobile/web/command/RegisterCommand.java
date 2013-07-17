@@ -22,9 +22,9 @@
      user.setUsername(this.request.getParameter("username"));
      user.setPassword(this.request.getParameter("password"));
      Service service = new Service();
-     service.register(user);
+     boolean exist =  service.register(user);
  
-     this.xmlResponse.append("success");
+     this.xmlResponse.append("<result exist='"+exist+"' />");
  
      return this.xmlResponse.toString();
    }
