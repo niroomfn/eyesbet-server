@@ -157,10 +157,10 @@ import java.util.Set;
 			       try {
 			         conn = getConnection();
 			         PreparedStatement prep = conn
-			           .prepareStatement("delete from game where id=?");
+			           .prepareStatement("delete from game where id=? and bet_id=?");
 			        
 					  		  prep.setInt(1, result.getGame().getGameId());
-					  		  
+					  		  prep.setInt(2, result.getGame().getBetId());
 					  		  prep.execute();
 					  		  
 					  		  if (result.isTypeChanged()) {
@@ -188,11 +188,11 @@ import java.util.Set;
 			  boolean deleted = result.gameDeleted();
 			  if (deleted) { 
 				  
-				  sql = "delete from game where id=?";
+				  sql = "delete from game where id=? and bet_id=?";
 			  } else {
 				  
 				  
-				  sql = "update game_bet set over_points=?, under_points=?, spread_point=?, spread_point_team=?, spread_point_favorite=? where id=?";
+				  sql = "update game_bet set over_points=?, under_points=?, spread_point=?, spread_point_team=?, spread_point_favorite=? where id=? and game_id=? and bet_id=?";
 				  
 			  }
 			  Connection conn = null;
@@ -202,6 +202,7 @@ import java.util.Set;
 			         
 			        if (deleted) {
 			        	  prep.setInt(1, result.getGame().getGameId());
+			        	  prep.setInt(2, result.getGame().getBetId());
 			        	  prep.execute();
 			          
 			        } else  {
@@ -213,6 +214,8 @@ import java.util.Set;
 					  		  prep.setString(4, gamebet.getSpreadPointTeam());
 					  		  prep.setString(5, gamebet.getSpreadPointFavorite());
 					  		  prep.setInt(6, gamebet.getId());
+					  		  prep.setInt(7, result.getGame().getGameId());
+					  		  prep.setInt(8, result.getGame().getBetId());
 					  		  prep.execute();
 			         
 			          } 

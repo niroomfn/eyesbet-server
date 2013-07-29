@@ -1,13 +1,37 @@
  package com.eyesbet.business.domain;
  
- import java.util.Date;
- import java.util.Set;
+import java.util.Date;
+import java.util.Set;
+import java.util.TimeZone;
  
  public class Fixtures
  {
    private static Fixtures me = new Fixtures();
    private FixtureMap map = new FixtureMap();
    private Date dateLoaded;
+   
+   public enum TimeZones {
+	   
+	   PT("US/Pacific"), ET ("US/Eastern"), CT("US/Central");
+	   
+	    private String text;
+	    private TimeZone timeZone;
+	    private TimeZones(String text) {
+		   timeZone = TimeZone.getTimeZone(text);
+		   this.text = text;
+	   }
+	   
+	    
+	   public String getText() {
+		   return text;
+	   }
+	   
+	   public TimeZone getTimeZone() {
+		   return timeZone;
+	   }
+	   
+	   
+   }
  
    public String[] getLeagues()
    {
@@ -29,6 +53,10 @@
    {
      return this.map.get(league.toString());
    }
+   
+   
+ 
+   
  
    public void setFixtures(Set<Fixture> list, Leagues league)
    {
@@ -75,7 +103,7 @@
      this.dateLoaded = dateLoaded;
    }
  
-   public static enum Leagues
+   public  enum Leagues
    {
      NFL("3101004"), NBA("3100973"), MLB(""), NHL("");
  
@@ -93,9 +121,16 @@
        return order;
      }
    }
+   
+   
+   
+   
+   
+   
+   
  }
 
-/* Location:           C:\Users\farbod.niroomand.cor\Desktop\eyesbetwar\classes\
- * Qualified Name:     com.eyesbet.business.domain.Fixtures
- * JD-Core Version:    0.6.2
- */
+
+
+ 
+ 

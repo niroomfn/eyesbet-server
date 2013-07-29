@@ -13,12 +13,18 @@
    private static SimpleDateFormat usFormat = new SimpleDateFormat("MM-dd-yyyy hh:mm a");
    private static SimpleDateFormat feedFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
    private static Calendar calendar = Calendar.getInstance();
+   
+   static {
+	   
+	   usFormat.setTimeZone(TimeZone.getTimeZone("US/Pacific"));
+   }
  
    public static Date convertToUSOnlyDate(String date)
    {
      try
      {
        return usOnlyDateFormat.parse(date);
+       
      }
      catch (ParseException e) {
        e.printStackTrace();
@@ -104,6 +110,12 @@
  
      return "";
    }
+   
+   
+   
+ 
+   
+   
  
    public static String getDefaultTimeZone()
    {
@@ -117,7 +129,3 @@
    }
  }
 
-/* Location:           C:\Users\farbod.niroomand.cor\Desktop\eyesbetwar\classes\
- * Qualified Name:     com.eyesbet.util.DateTime
- * JD-Core Version:    0.6.2
- */

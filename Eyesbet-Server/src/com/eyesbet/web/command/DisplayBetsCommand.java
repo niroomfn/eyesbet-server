@@ -35,7 +35,7 @@
          Bet bet = localIterator1.next();
  
          localIterator2 = bet.getGames().iterator();
-				  while (localIterator2.hasNext()) {
+			while (localIterator2.hasNext()) {
 					  Game game = localIterator2.next();
          if (!service.updateGameScores(game))
            trackGames.addGame(game);

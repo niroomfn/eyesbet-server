@@ -1,9 +1,9 @@
  package com.eyesbet.business.domain;
  
  import java.text.ParseException;
- import java.text.SimpleDateFormat;
- import java.util.Date;
- import java.util.TimeZone;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
  
  public class Fixture
    implements Comparable<Fixture>
@@ -131,9 +131,11 @@
    {
      return team.substring(team.lastIndexOf(" ") + 1, team.length());
    }
+
+
+   
+   
+   
+   
  }
 
-/* Location:           C:\Users\farbod.niroomand.cor\Desktop\eyesbetwar\classes\
- * Qualified Name:     com.eyesbet.business.domain.Fixture
- * JD-Core Version:    0.6.2
- */

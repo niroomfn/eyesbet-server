@@ -1,9 +1,11 @@
  package com.eyesbet.dao;
  
  import javax.naming.Context;
- import javax.naming.InitialContext;
- import javax.naming.NamingException;
- import javax.sql.DataSource;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import com.eyesbet.app.Constants;
  
  public class AppDataSource
  {
@@ -14,8 +16,9 @@
    {
      try
      {
+       Constants constants = Constants.getInstance();
        Context envContext = (Context)new InitialContext().lookup("java:/comp/env");
-       this.ds = ((DataSource)envContext.lookup("jdbc/eyesbet"));
+       this.ds = ((DataSource)envContext.lookup(constants.getJndiName()));
      }
      catch (NamingException e) {
        throw new RuntimeException(e.toString());

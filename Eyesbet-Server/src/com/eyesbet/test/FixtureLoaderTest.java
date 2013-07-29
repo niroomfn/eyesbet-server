@@ -1,5 +1,7 @@
 package com.eyesbet.test;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,21 +11,24 @@ import com.eyesbet.business.domain.Fixtures.Leagues;
 public class FixtureLoaderTest {
 	
 	
-	
+	private String [] homeList = {"Bulls","Knicks","Lakers","Spurs"};
+	private String [] awayList = { "Heat", "Magic", "Bobcats", "Nuggets" };
+
 	
 	public void loadNBAFixtures() {
 		
 		Fixture fixture = null;
 		Fixtures fixtures = Fixtures.getInstance();
 		Set<Fixture> list = new HashSet<Fixture>();
-		
-		for (int i=0; i < 3; i++) {
+		SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+		String date = formatter.format(new Date());
+		for (int i=0; i < 4; i++) {
 			
 			fixture = new Fixture();
-			fixture.setAway("Away_"+i);
-			fixture.setHome("home_"+i);
-			fixture.setId(i);
-			fixture.setSchedule("06-12-2013 0"+(i+1)+":00 PM");
+			fixture.setAway(awayList[i]);
+			fixture.setHome(homeList[i]);
+			fixture.setId((awayList[i] + homeList[i]).hashCode());
+			fixture.setSchedule(date+" 0"+(i+1)+":00 PM");
 			
 			list.add(fixture);
 			

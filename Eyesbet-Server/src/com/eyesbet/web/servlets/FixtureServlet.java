@@ -1,21 +1,23 @@
  package com.eyesbet.web.servlets;
  
  import com.eyesbet.business.FixturesLoader;
- import com.eyesbet.business.domain.Fixture;
- import com.eyesbet.business.domain.Fixtures;
+import com.eyesbet.business.domain.Fixture;
+import com.eyesbet.business.domain.Fixtures;
+import com.eyesbet.business.domain.Fixtures.TimeZones;
 import com.eyesbet.business.quartz.FixtureScheduler;
 import com.eyesbet.test.FixtureLoaderTest;
- import com.eyesbet.util.DateTime;
- import java.io.IOException;
- import java.util.Date;
- import java.util.Set;
- import javax.servlet.ServletException;
- import javax.servlet.http.HttpServlet;
- import javax.servlet.http.HttpServletRequest;
- import javax.servlet.http.HttpServletResponse;
+import com.eyesbet.util.DateTime;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Set;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.BasicConfigurator;
- import org.apache.log4j.Logger;
+import org.apache.log4j.Logger;
  
  public class FixtureServlet extends HttpServlet
  {
@@ -47,27 +49,31 @@ import org.apache.log4j.BasicConfigurator;
      StringBuilder xml = null;
  
      String league = request.getParameter("league");
- 
-     if (league != null)
-     {
+     
+     TimeZones timezone = TimeZones.valueOf(request.getParameter("timezone"));
+
+     if (league != null) {
        Fixtures.Leagues leagues = Fixtures.Leagues.valueOf(league);
  
-       xml = convertToXml(leagues);
-     }
-     else
-     {
+       xml = convertToXml(leagues, timezone);
+     
+     } else {
+    	 
        String[] order = Fixtures.Leagues.getOrder();
        xml = new StringBuilder("<fixtures>");
+       Date date = null;
+       SimpleDateFormat formatter = getDateFormatter(timezone);
        for (String s : order) {
          xml.append("<league n='" + s + "' />");
        }
  
        Set<Fixture> list = Fixtures.getInstance().getLeagueFixtures(Fixtures.Leagues.valueOf(order[0]));
        for (Fixture f : list) {
+    	  date = DateTime.convertToUSDate(f.getSchedule());
          xml.append("<fixture id='").append(f.getFixtureId()).append("'");
          xml.append(" h='").append(f.getHome()).append("'");
          xml.append(" a='").append(f.getAway()).append("'");
-         xml.append(" s='").append(f.getSchedule()).append("' />");
+         xml.append(" s='").append(formatter.format(date)).append("' />");
        }
  
        xml.append("</fixtures>");
@@ -85,18 +91,25 @@ import org.apache.log4j.BasicConfigurator;
    {
    }
  
-   private StringBuilder convertToXml(Fixtures.Leagues league)
+   private StringBuilder convertToXml(Fixtures.Leagues league, TimeZones timezone)
    {
      StringBuilder xml = new StringBuilder("<fixtures >");
- 
+    
      xml.append("<league n='").append(league.toString()).append("' >");
      Set<Fixture> list = Fixtures.getInstance().getLeagueFixtures(league);
+     
      if (list != null) {
-     for (Fixture f : list) {
-       xml.append("<fixture id='").append(f.getFixtureId()).append("'");
-       xml.append(" h='").append(f.getHome()).append("'");
-       xml.append(" a='").append(f.getAway()).append("'");
-       xml.append(" s='").append(f.getSchedule()).append("' />");
+    	 
+    	 SimpleDateFormat formatter = getDateFormatter(timezone);
+    	
+    	 Date date = null;
+    
+    	for (Fixture f : list) {
+    	  date = DateTime.convertToUSDate(f.getSchedule());
+	      xml.append("<fixture id='").append(f.getFixtureId()).append("'");
+	      xml.append(" h='").append(f.getHome()).append("'");
+	      xml.append(" a='").append(f.getAway()).append("'");
+	      xml.append(" s='").append(formatter.format(date)).append("' />");
      }
      
      }
@@ -105,9 +118,18 @@ import org.apache.log4j.BasicConfigurator;
  
      return xml;
    }
+   
+   
+   
+   private SimpleDateFormat getDateFormatter(TimeZones timezone) {
+	   
+	   SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy hh:mm a");
+  	 formatter.setTimeZone(timezone.getTimeZone());
+  	 
+  	 return formatter;
+	   
+   }
+   
+   
  }
 
-/* Location:           C:\Users\farbod.niroomand.cor\Desktop\eyesbetwar\classes\
- * Qualified Name:     com.eyesbet.web.servlets.FixtureServlet
- * JD-Core Version:    0.6.2
- */

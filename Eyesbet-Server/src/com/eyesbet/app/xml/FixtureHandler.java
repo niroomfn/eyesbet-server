@@ -75,7 +75,3 @@
    }
  }
 
-/* Location:           C:\Users\farbod.niroomand.cor\Desktop\eyesbetwar\classes\
- * Qualified Name:     com.eyesbet.app.xml.FixtureHandler
- * JD-Core Version:    0.6.2
- */
