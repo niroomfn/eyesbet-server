@@ -27,7 +27,8 @@ import javax.servlet.http.HttpServletRequest;
      if (cmd == null)
      {
        String[] games = this.request.getParameter("games").split(",");
-      // BetType betType = null;
+       
+       
        Bet bet = null;
 
        if (games.length > 1)
@@ -36,6 +37,7 @@ import javax.servlet.http.HttpServletRequest;
          bet = new Bet(BetType.straightWages, 0);
        }
        
+       bet.setTimezone(request.getParameter("timezone"));
        Game game = null;
        String[] teams = null;
        for (String g : games)
@@ -52,6 +54,7 @@ import javax.servlet.http.HttpServletRequest;
        boolean lockbetType = false;
        String lockTypeTo = "";
        StringBuilder entry = new StringBuilder();
+       
        if (request.getParameter("editBet") != null	) {
     	  Bets bets = (Bets) request.getSession().getAttribute("bets");
     	  

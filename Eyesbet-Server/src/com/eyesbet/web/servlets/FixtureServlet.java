@@ -60,7 +60,7 @@ import org.apache.log4j.Logger;
      } else {
     	 
        String[] order = Fixtures.Leagues.getOrder();
-       xml = new StringBuilder("<fixtures>");
+       xml = new StringBuilder("<fixtures >");
        Date date = null;
        SimpleDateFormat formatter = getDateFormatter(timezone);
        for (String s : order) {
@@ -123,7 +123,7 @@ import org.apache.log4j.Logger;
    
    private SimpleDateFormat getDateFormatter(TimeZones timezone) {
 	   
-	   SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy hh:mm a");
+	   SimpleDateFormat formatter = new SimpleDateFormat(DateTime.dateFormat);
   	 formatter.setTimeZone(timezone.getTimeZone());
   	 
   	 return formatter;

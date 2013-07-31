@@ -78,6 +78,8 @@ public class UserDao extends Dao
         bet.setCreatedDate(rs.getString("created_date"));
         bet.setModifiedDate(rs.getString("modified_date"));
         bet.setName(rs.getString("bet_name"));
+        bet.setTimezone(rs.getString("timezone"));
+        bet.setDateFormat(rs.getString("date_format"));
         bets.addBet(bet);
 
         prep2.setInt(1, bet.getId());

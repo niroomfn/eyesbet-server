@@ -9,8 +9,10 @@
  
  public class DateTime
  {
+  
+	 public final static String dateFormat = "EEEE MMM dd yyyy hh:mm a";
    private static SimpleDateFormat usOnlyDateFormat = new SimpleDateFormat("MM/dd/yyyy");
-   private static SimpleDateFormat usFormat = new SimpleDateFormat("MM-dd-yyyy hh:mm a");
+   private static SimpleDateFormat usFormat = new SimpleDateFormat(dateFormat);
    private static SimpleDateFormat feedFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
    private static Calendar calendar = Calendar.getInstance();
    

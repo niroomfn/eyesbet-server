@@ -15,7 +15,6 @@ import java.util.TimeZone;
    private String timezone = "America/Los_Angeles";
    private static SimpleDateFormat usDateFormat = new SimpleDateFormat("MM-dd-yyyy hh:mm aaa");
    private static SimpleDateFormat noneUSFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
- 
    public String getHome()
    {
      return this.home;
@@ -47,6 +46,7 @@ import java.util.TimeZone;
      {
        Date d = noneUSFormat.parse(date + " " + time);
        this.schedule = usDateFormat.format(d);
+       //this.schedule = dayFormat.format(d);
      }
      catch (ParseException e) {
        e.printStackTrace();
@@ -68,10 +68,7 @@ import java.util.TimeZone;
      return this.away + " @ " + this.home;
    }
  
-   public String getId()
-   {
-     return this.away + "@" + this.home + "@" + this.id;
-   }
+   
  
    public String getTimezone()
    {
@@ -131,6 +128,8 @@ import java.util.TimeZone;
    {
      return team.substring(team.lastIndexOf(" ") + 1, team.length());
    }
+
+	
 
 
    

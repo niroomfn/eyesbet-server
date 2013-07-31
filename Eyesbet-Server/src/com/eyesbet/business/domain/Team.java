@@ -60,7 +60,12 @@
  
    private String treamName(String name)
    {
-     return name.substring(name.lastIndexOf(" ") + 1, name.length());
+        if(name  != null) {
+	   
+	   return name.substring(name.lastIndexOf(" ") + 1, name.length());
+        } else {
+        	return name;
+        }
    }
  }
 

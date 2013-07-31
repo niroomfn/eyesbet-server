@@ -1,4 +1,7 @@
  package com.eyesbet.business.domain;
+
+
+
  
  public class Game
  {
@@ -215,7 +218,8 @@
  
    public String toString()
    {
-     return this.away.getName() + ": " + this.away.getScore() + " @ " + this.home.getName() + ": " + this.home.getScore() + " STATUS: " + this.statusType;
+     return this.away.getName() + ": " + this.away.getScore() + " @ " +
+   this.home.getName() + ": " + this.home.getScore() + " STATUS: " + this.statusType;
    }
  
    public int getBetId() {
@@ -317,6 +321,8 @@
    }
    
    
+  
+   
    
    public void updateBet(GameBet bet) {
 	   
@@ -349,7 +355,3 @@
    }
  }
 
-/* Location:           C:\Users\farbod.niroomand.cor\Desktop\eyesbetwar\classes\
- * Qualified Name:     com.eyesbet.business.domain.Game
- * JD-Core Version:    0.6.2
- */

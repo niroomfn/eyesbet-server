@@ -58,10 +58,8 @@
      params.setGames("all");
      String url = null;
      Map<String,Set<Game>> map = null;
-     for (Leagues key: keys) 
-       
-     {
-       
+     for (Leagues key: keys) {
+    	 
        set = games.get(key);
        map = groupGamesByDate(set);
        Set<String> mapKeys = map.keySet();
@@ -72,8 +70,7 @@
 		       url = RequestBuilder.buildRequest(key, params);
 		       try
 		       {
-		         LiveScoreFeedHandler handler = new LiveScoreFeedHandler(key, set);
-		         new FeedSaxParser(url, handler);
+		         new FeedSaxParser(url, new LiveScoreFeedHandler(key,set));
 		       }
 		       catch (Exception e)
 		       {

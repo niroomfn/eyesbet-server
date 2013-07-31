@@ -10,11 +10,13 @@
  public class LiveScoreFeedHandler extends FixtureHandler
  {
    private Set<Game> games;
+   private Game game ;
  
    public LiveScoreFeedHandler(Leagues tournament, Set<Game> games)
    {
      super(tournament);
      this.games = games;
+     game = new Game(new Team(0,null), new Team(0,null), this.tournament);
    }
  
    public void startElement(String uri, String localName, String qName, Attributes attributes)
@@ -22,9 +24,8 @@
    {
      if (qName.equals("tournament"))
      {
-       int size = attributes.getLength();
  
-       for (int i = 0; i < size; i++)
+       for (int i = 0; i < attributes.getLength(); i++)
        {
          if (attributes.getQName(i).equals("tournament_id"))
          {
@@ -41,11 +42,14 @@
        updateGame(attributes);
      }
    }
- 
+   
+   /**
+    * 
+    * @param att
+    */
    private void updateGame(Attributes att)
    {
      int size = att.getLength();
-     Game game = new Game(new Team(0, null), new Team(0, null), this.tournament);
      for (int i = 0; i < size; i++) {
        if (att.getQName(i).equals("id")) {
          game.setId(Integer.parseInt(att.getValue(i)));
@@ -69,6 +73,7 @@
        }
  
      }
+     
  
      for (Game g : this.games)
      {

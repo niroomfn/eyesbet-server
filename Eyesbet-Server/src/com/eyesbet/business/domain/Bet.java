@@ -6,6 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import com.eyesbet.business.domain.Fixtures.TimeZones;
+import com.eyesbet.util.DateTime;
+
 public class Bet {
 	private BetType betType;
 	private List<Game> games = new ArrayList<Game>();
@@ -16,6 +19,8 @@ public class Bet {
 	private int status;
 	private String xml;
 	private String name;
+	private String timezone = TimeZones.PT.toString();
+	private String dateFormat = DateTime.dateFormat;
 
 	public Bet(BetType betType, int id) {
 		this.betType = betType;
@@ -289,5 +294,27 @@ public class Bet {
 		return result;
 
 	}
+
+	public String getTimezone() {
+		return timezone;
+	}
+
+	public void setTimezone(String timezone) {
+		if (timezone != null)
+			this.timezone = timezone;
+	}
+
+	public String getDateFormat() {
+		return dateFormat;
+	}
+
+	public void setDateFormat(String dateFormat) {
+		if (dateFormat != null) {
+			this.dateFormat = dateFormat;
+		}
+	}
+	
+	
+	
 
 }
