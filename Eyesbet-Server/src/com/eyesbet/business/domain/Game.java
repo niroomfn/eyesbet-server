@@ -1,5 +1,7 @@
  package com.eyesbet.business.domain;
 
+import java.util.Date;
+
 
 
  
@@ -17,6 +19,7 @@
    protected int spreadPointStatus;
    protected StatusType statusType;
    protected String statusDesc;
+   protected Date scheduleDate;
  
    public Game()
    {
@@ -339,8 +342,24 @@
 	   
    }
    
+   
+   
+   
  
-   public static enum StatusType
+  public Date getScheduleDate() {
+	return scheduleDate;
+}
+  
+
+public void setScheduleDate(Date scheduleDate) {
+	this.scheduleDate = scheduleDate;
+}
+
+
+
+
+
+public static enum StatusType
    {
      inprogress("In Progress"), finished("Finished"), notstarted("Not Started");
  

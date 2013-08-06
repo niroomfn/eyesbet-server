@@ -1,19 +1,20 @@
  package com.eyesbet.business;
  
  import com.eyesbet.app.xml.FeedSaxParser;
- import com.eyesbet.app.xml.LiveScoreFeedHandler;
- import com.eyesbet.business.domain.Fixtures.Leagues;
- import com.eyesbet.business.domain.Game;
- import com.eyesbet.business.domain.Params;
- import com.eyesbet.business.domain.RequestBuilder;
- import com.eyesbet.business.domain.TrackerGames;
- import com.eyesbet.util.DateTime;
- import java.util.Date;
- import java.util.HashMap;
- import java.util.HashSet;
- import java.util.Map;
- import java.util.Set;
- import org.apache.log4j.Logger;
+import com.eyesbet.app.xml.LiveScoreFeedHandler;
+import com.eyesbet.business.domain.Fixtures.Leagues;
+import com.eyesbet.business.domain.Game;
+import com.eyesbet.business.domain.Params;
+import com.eyesbet.business.domain.RequestBuilder;
+import com.eyesbet.business.domain.TrackerGames;
+import com.eyesbet.util.DateTime;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import org.apache.log4j.Logger;
  
  public class ScoreFeed
  {
@@ -58,19 +59,18 @@
      params.setGames("all");
      String url = null;
      Map<String,Set<Game>> map = null;
-     for (Leagues key: keys) {
+     for (Leagues league: keys) {
     	 
-       set = games.get(key);
+       set = games.get(league);
        map = groupGamesByDate(set);
        Set<String> mapKeys = map.keySet();
-       
 	       for (String k: mapKeys) {
 
-		       params.setDate(DateTime.convertDateToFeedDate(k));
-		       url = RequestBuilder.buildRequest(key, params);
+		       params.setDate(k);
+		       url = RequestBuilder.buildRequest(league, params);
 		       try
 		       {
-		         new FeedSaxParser(url, new LiveScoreFeedHandler(key,set));
+		         new FeedSaxParser(url, new LiveScoreFeedHandler(league,set));
 		       }
 		       catch (Exception e)
 		       {
@@ -83,11 +83,13 @@
    private Map<String, Set<Game>> groupGamesByDate(Set<Game> games)
    {
      Map<String,Set<Game>> map = new HashMap<String, Set<Game>>();
-     String date = null;
+    // Date date = null;
      Set<Game> set = null;
+     String date =  null; 
      for (Game game : games)
      {
-       date = game.getSchedule();
+    	 
+         date = DateTime.convertDateToFeedDate(game.getScheduleDate());
        if (map.get(date) == null) {
          set = new HashSet<Game>();
          set.add(game);
@@ -130,5 +132,61 @@
      }
    }
    }
+   
+   
+   
+   public class DateKey {
+	   
+	   
+	   private Date date;
+	   private String dateText;
+	   
+	   public DateKey(Date date, String dateText) {
+		   
+		   this.date = date;
+		   this.dateText = dateText;
+		   
+	   }
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public String getDateText() {
+		return dateText;
+	}
+
+	public void setDateText(String dateText) {
+		this.dateText = dateText;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		
+		String text = ((DateKey)obj).getDateText();
+		
+		return this.dateText.equals(text);
+		
+	}
+
+	@Override
+	public int hashCode() {
+		
+		return dateText.hashCode();
+		
+		
+	}
+	   
+	   
+	   
+	   
+   }
+   
+  
+   
  }
 

@@ -2,7 +2,6 @@
  
  import java.text.ParseException;
  import java.text.SimpleDateFormat;
- import java.util.Calendar;
  import java.util.Date;
  import java.util.TimeZone;
  import java.util.concurrent.TimeUnit;
@@ -13,12 +12,12 @@
 	 public final static String dateFormat = "EEEE MMM dd yyyy hh:mm a";
    private static SimpleDateFormat usOnlyDateFormat = new SimpleDateFormat("MM/dd/yyyy");
    private static SimpleDateFormat usFormat = new SimpleDateFormat(dateFormat);
-   private static SimpleDateFormat feedFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-   private static Calendar calendar = Calendar.getInstance();
+   private static SimpleDateFormat feedFormat = new SimpleDateFormat("yyyy-MM-dd");
    
    static {
 	   
 	   usFormat.setTimeZone(TimeZone.getTimeZone("US/Pacific"));
+	   feedFormat.setTimeZone(TimeZone.getTimeZone("GMT+2"));
    }
  
    public static Date convertToUSOnlyDate(String date)
@@ -48,62 +47,21 @@
      return null;
    }
  
-   public static boolean before(String date)
-   {
-     try
-     {
-       Date d = usOnlyDateFormat.parse(date);
-       Date now = usOnlyDateFormat.parse(usOnlyDateFormat.format(new Date()));
-       if (d.before(now)) return true; 
-     }
-     catch (ParseException e)
-     {
-       e.printStackTrace();
-     }
+   
  
-     return false;
-   }
  
-   public static boolean after(String date)
-   {
-     try
-     {
-       Date d = usOnlyDateFormat.parse(date);
-       Date now = usOnlyDateFormat.parse(usOnlyDateFormat.format(new Date()));
- 
-       if (d.after(now)) return true; 
-     }
-     catch (ParseException e)
-     {
-       e.printStackTrace();
-     }
- 
-     return false;
-   }
- 
-   public static String convertTodayToFeedDate()
-   {
-     Date now = new Date();
-     calendar.setTime(now);
-     calendar.add(5, 1);
- 
-     return feedFormat.format(calendar.getTime());
-   }
+  
  
    public static String convertDateToFeedDate(Date date)
    {
-     feedFormat.setTimeZone(TimeZone.getTimeZone("GMT+2"));
-     String str = feedFormat.format(date);
-     return str.substring(0, str.indexOf(" "));
+     return feedFormat.format(date);
    }
  
    public static String convertDateToFeedDate(String date)
    {
      try
      {
-       feedFormat.setTimeZone(TimeZone.getTimeZone("GMT+2"));
-       String str = feedFormat.format(usFormat.parse(date));
-       return str.substring(0, str.indexOf(" "));
+       return feedFormat.format(usFormat.parse(date));
      }
      catch (Exception e)
      {
@@ -114,10 +72,7 @@
    }
    
    
-   
- 
-   
-   
+
  
    public static String getDefaultTimeZone()
    {

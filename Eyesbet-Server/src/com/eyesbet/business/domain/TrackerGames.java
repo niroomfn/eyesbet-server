@@ -1,19 +1,22 @@
  package com.eyesbet.business.domain;
  
  import java.util.HashMap;
- import java.util.HashSet;
- import java.util.Iterator;
- import java.util.Set;
- import org.apache.log4j.Logger;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TimeZone;
+
+import org.apache.log4j.Logger;
 
 import com.eyesbet.business.domain.Fixtures.Leagues;
+import com.eyesbet.business.domain.Fixtures.TimeZones;
  
  @SuppressWarnings("serial")
 public class TrackerGames extends HashMap<Leagues, Set<Game>>
  {
    private boolean hasFinishedGames;
    private static Logger logger = Logger.getLogger(TrackerGames.class);
- 
+   private TimeZone timezone = TimeZones.PT.getTimeZone();
    public TrackerGames() {
      put(Leagues.NBA, new HashSet<Game>());
      put(Leagues.NFL, new HashSet<Game>());
@@ -131,8 +134,21 @@ public class TrackerGames extends HashMap<Leagues, Set<Game>>
    {
      this.hasFinishedGames = hasFinishedGames;
    }
- }
 
+public TimeZone getTimezone() {
+	return timezone;
+}
+
+public void setTimezone(TimeZone timezone) {
+	this.timezone = timezone;
+}
+   
+   
+   
+ }
+ 
+ 
+ 
 /* Location:           C:\Users\farbod.niroomand.cor\Desktop\eyesbetwar\classes\
  * Qualified Name:     com.eyesbet.business.domain.TrackerGames
  * JD-Core Version:    0.6.2

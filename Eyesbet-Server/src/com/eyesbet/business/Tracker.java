@@ -1,14 +1,14 @@
  package com.eyesbet.business;
  
  import com.eyesbet.business.domain.Game;
- import com.eyesbet.business.domain.LiveGame;
- import com.eyesbet.business.domain.TrackerGames;
- import java.util.Random;
- import java.util.Set;
- import java.util.concurrent.Executors;
- import java.util.concurrent.ScheduledExecutorService;
- import java.util.concurrent.TimeUnit;
- import org.apache.log4j.Logger;
+import com.eyesbet.business.domain.LiveGame;
+import com.eyesbet.business.domain.TrackerGames;
+import java.util.Random;
+import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import org.apache.log4j.Logger;
  
  public class Tracker
  {
@@ -45,6 +45,7 @@
    private void start() {
      logger.info("Starting task...");
      this.executor = Executors.newSingleThreadScheduledExecutor();
+     
      this.executor.scheduleAtFixedRate(new TrackerTask(), -1L, 10L, TimeUnit.SECONDS);
      logger.info("Task started.");
    }
@@ -61,7 +62,9 @@
    }
  
    public class TrackerTask implements Runnable {
+	   
      public TrackerTask() {
+    	 
      }
  
      public void run() {

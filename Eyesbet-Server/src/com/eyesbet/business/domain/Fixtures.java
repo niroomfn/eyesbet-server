@@ -12,12 +12,14 @@ import java.util.TimeZone;
    
    public enum TimeZones {
 	   
-	   PT("US/Pacific"), ET ("US/Eastern"), CT("US/Central");
+	   PT("US/Pacific","UTC-8"), ET ("US/Eastern","UTC-4"), CT("US/Central", "");
 	   
 	    private String text;
 	    private TimeZone timeZone;
-	    private TimeZones(String text) {
+	    private String id;
+	    private TimeZones(String text, String id) {
 		   timeZone = TimeZone.getTimeZone(text);
+		   this.id = id;
 		   this.text = text;
 	   }
 	   
@@ -28,6 +30,11 @@ import java.util.TimeZone;
 	   
 	   public TimeZone getTimeZone() {
 		   return timeZone;
+	   }
+	   
+	   public String getId() {
+		   
+		   return id;
 	   }
 	   
 	   

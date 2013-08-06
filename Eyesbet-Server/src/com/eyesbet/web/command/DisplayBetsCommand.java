@@ -10,11 +10,11 @@ import com.eyesbet.business.domain.Game;
 import com.eyesbet.business.domain.Game.StatusType;
 import com.eyesbet.business.domain.TrackerGames;
 import com.eyesbet.dao.UserDao;
-import com.eyesbet.util.DateTime;
-
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,27 +39,27 @@ import org.apache.log4j.Logger;
        TrackerGames trackGames = new TrackerGames();
        Service service = new Service();
        List<Game> games = null;
-       String pattern = DateTime.dateFormat;
-       pattern = pattern.substring(0, pattern.indexOf(" hh"));
-     
-       SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
-       String today = dateFormat.format(new Date());
-       Date todayDate = dateFormat.parse(today);
+  
+       Calendar cal = Calendar.getInstance();
        
+       SimpleDateFormat dateFormat = new SimpleDateFormat();
+             
        for (Bet bet: bets.getBets()){
-    	   
-    	   // compare todays date (exclude time) with each bets game schedule
-    	   pattern = bet.getDateFormat();
-    	   pattern = pattern.substring(0, pattern.indexOf(" hh"));
-    	   dateFormat.applyPattern(pattern);
-           dateFormat.setTimeZone(TimeZones.valueOf(bet.getTimezone()).getTimeZone());
-            
+    	   TimeZone timezone = TimeZones.valueOf(bet.getTimezone()).getTimeZone();
+    	   cal.setTimeZone(timezone);
+    	   trackGames.setTimezone(timezone);
+
+    	   dateFormat.applyPattern(bet.getDateFormat());
+           dateFormat.setTimeZone(timezone);
+          
     	   	games = bet.getGames();
 		    int number = -1;
     	   	for (Game game: games) {
-    	   		number = compareGameDate(game,todayDate,dateFormat);
-    	   		
-		    	if ( number == 0 ) { // todays game
+   	   		 	game.setScheduleDate(dateFormat.parse(game.getSchedule()));
+    	   		number = compareGameDate(game,cal);
+		    	if ( number == 0 ) { 
+		    		// todays game (- or + 90 minutes after and before current time)
+
 		    		 trackGames.addGame(game);
 		    	} else if (number > 0) {
 		    		    // future game
@@ -67,8 +67,9 @@ import org.apache.log4j.Logger;
 		    		game.setStatusType(StatusType.notstarted.toString());
 		    		
 		    	} else { // finished game
-		    		 if (!service.updateGameScores(game))
+		    		 if (!service.updateGameScores(game)) {
 			        	 trackGames.addGame(game);
+		    		 }
 			         else {
 			        	 trackGames.setHasFinishedGames(true);
 			         }
@@ -136,11 +137,22 @@ import org.apache.log4j.Logger;
    }
    
    
-   private int compareGameDate(Game game, Date date, SimpleDateFormat dateFormat) throws Exception {
+   private int compareGameDate(Game game, Calendar cal) throws Exception {
 	   
-	  Date d = dateFormat.parse(game.getSchedule());
 	  
-	  return d.compareTo(date);
+	  cal.add(Calendar.MINUTE, -90);
+	  Date before = cal.getTime();
+	  cal.add(Calendar.MINUTE, 180);
+	  Date after = cal.getTime();
+	  Date d = game.getScheduleDate();
+	  if (d.compareTo(before) <= 0 ) {
+		  return -1;
+	  } else if (d.compareTo(after) >= 0 ) {
+		  return 1;
+	  } else {
+		  
+		  return 0;
+	  }
 	   
    }
    
