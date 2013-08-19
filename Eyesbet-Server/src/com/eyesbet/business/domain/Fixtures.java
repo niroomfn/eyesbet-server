@@ -112,12 +112,17 @@ import java.util.TimeZone;
  
    public  enum Leagues
    {
-     NFL("3101004"), NBA("3100973"), MLB(""), NHL("");
+     NFL("3101004", 180), NBA("3100973",150), MLB("", 180), NHL("",150);
  
      private String leagueId;
      private static String[] order = { "NBA", "NFL", "MLB", "NHL" };
- 
-     private Leagues(String leagueId) { this.leagueId = leagueId; }
+     private int estimatedDurationMinutes;
+     private Leagues(String leagueId, int estimatedDurationMinutes ) {
+    	 
+    	this.leagueId = leagueId;
+    	this.estimatedDurationMinutes = estimatedDurationMinutes;
+    	 
+     }
  
      public String getLeagueId() {
        return this.leagueId;
@@ -127,6 +132,12 @@ import java.util.TimeZone;
      {
        return order;
      }
+
+	public int getEstimatedDurationMinutes() {
+		return estimatedDurationMinutes;
+	}
+     
+     
    }
    
    

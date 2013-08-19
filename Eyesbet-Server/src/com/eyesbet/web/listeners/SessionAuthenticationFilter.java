@@ -26,7 +26,8 @@
    {
      HttpServletRequest httpRequest = (HttpServletRequest)request;
      String requestedPage = getRequestedPage(httpRequest);
-     if ((requestedPage == null) || (this.allowedPages.indexOf(requestedPage) >= 0) || (requestedPage.indexOf("m.") < 0))
+     if ((requestedPage == null) || (this.allowedPages.indexOf(requestedPage) >= 0)
+    		 || (requestedPage.indexOf("m.") < 0))
      {
        chain.doFilter(request, response);
      }
@@ -37,7 +38,7 @@
          response.getWriter().write("Session expired. Please login again");
        }
  
-     }
+     } 
      else
      {
        chain.doFilter(request, response);

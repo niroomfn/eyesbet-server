@@ -16,7 +16,7 @@ import org.apache.commons.lang.time.DateFormatUtils;
 
 public class UserDao extends Dao
 {
-  private static String selectBets = "select * from bets where user_id=?";
+  private static String selectBets = "select * from bets where user_id=? order by created_date desc";
   private static String selectGames = "select * from game where bet_id=?";
   private static String selectGameBet = "select * from game_bet where game_id=? and bet_id=?";
   private static String register = "insert into user_account (first_name,last_name,username,password,city,email) VALUES (?,?,?,SHA1(?),?,?)";

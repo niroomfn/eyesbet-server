@@ -31,15 +31,15 @@ import org.apache.log4j.Logger;
      BasicConfigurator.configure();
    }
  
-   protected void doGet(HttpServletRequest request, HttpServletResponse response)
-     throws ServletException, IOException
-   {
-     String xml = null;
+   protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+     
+	 String xml = null;
      String contentType = "text/xml";
      try {
        String uri = request.getRequestURI();
        uri = uri.substring(uri.lastIndexOf("/") + 1, uri.length());
        MobileCommand command = null;
+       
        if ("m.login".equals(uri)) {
          this.logger.info("User: Signed In....");
          command = new LoginCommand(request);
@@ -104,6 +104,8 @@ import org.apache.log4j.Logger;
      catch (Exception e)
      {
        this.logger.error("", e);
+        xml = "Could not process your request. Please try again";
+        contentType = "text/html";
      }
  
      response.setContentType(contentType);
@@ -121,7 +123,3 @@ import org.apache.log4j.Logger;
    }
  }
 
-/* Location:           C:\Users\farbod.niroomand.cor\Desktop\eyesbetwar\classes\
- * Qualified Name:     com.eyesbet.mobile.web.servlets.MobileController
- * JD-Core Version:    0.6.2
- */

@@ -1,9 +1,9 @@
  package com.eyesbet.business;
  
  import com.eyesbet.business.domain.Bet;
- import com.eyesbet.business.domain.Bets;
- import com.eyesbet.business.domain.Game;
- import java.util.List;
+import com.eyesbet.business.domain.Bets;
+import com.eyesbet.business.domain.Game;
+import java.util.List;
  
  public abstract class BetComputer
  {
@@ -125,6 +125,27 @@
      sb.append("</bets></data>");
      return sb.toString();
    }
+   
+   
+   public static void computeAllBetsStatus(Bets bets) {
+	   
+	  for (Bet bet : bets.getBets()){
+         for (Game game : bet.getGames()){
+         
+           if (!game.isLive()) {
+             BetComputer.computGameBet(game);
+ 
+           }else{
+             BetComputer.computeLiveGameBet(game);
+           }
+         }
+ 
+        
+          BetComputer.computeBetStatus(bet);
+
+	   }
+	   
+   }
  
    public static Bet computeBetStatus(Bet bet)
    {
@@ -135,6 +156,10 @@
        if (game.getStatus() != 1) {
          count++;
          sum += game.getStatus();
+       } else {
+    	   // game with status 1 means tie means lost for whole bet
+    	   bet.setStatus(0);
+    	   return bet;
        }
      }
  
@@ -145,13 +170,14 @@
      return bet;
    }
  
+   
+   
+   
+   
+   
    public static enum TightStatus
    {
      tight;
    }
  }
 
-/* Location:           C:\Users\farbod.niroomand.cor\Desktop\eyesbetwar\classes\
- * Qualified Name:     com.eyesbet.business.BetComputer
- * JD-Core Version:    0.6.2
- */

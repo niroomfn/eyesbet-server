@@ -1,18 +1,24 @@
 package com.eyesbet.mobile.web.command;
 
 
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
+
+import com.eyesbet.business.BetComputer;
 import com.eyesbet.business.Service;
 import com.eyesbet.business.domain.Bet;
 import com.eyesbet.business.domain.BetType;
 import com.eyesbet.business.domain.Bets;
 import com.eyesbet.business.domain.DeleteBetResult;
+import com.eyesbet.business.domain.Game;
 import com.eyesbet.dao.BetDao;
 
 public class EditBetCommand extends MobileCommand {
 	private BetDao dao= new BetDao();
-
+	private static Logger logger = Logger.getLogger(EditBetCommand.class);
+	
 	public EditBetCommand(HttpServletRequest request) {
 		super(request);
 		// TODO Auto-generated constructor stub
@@ -30,9 +36,10 @@ public class EditBetCommand extends MobileCommand {
 		
 		
 		if ("deleteParlay".equals(cmd)) {
-			
+			logger.info("Deleting parlay bet....");
 			int gameId = Integer.parseInt(request.getParameter("gameId"));
 			String type = request.getParameter("type");
+			//logger.debug("bet type: "+type);
 			BetType betType = null;
 			
 			if ("ou".equals(type)) betType = BetType.overUnder;
@@ -40,21 +47,10 @@ public class EditBetCommand extends MobileCommand {
 			else if ("mn".equals(type)) betType = BetType.moneyline;
 			
 			deleteParlayBet(betId,gameId, betType);
+			
+			refresh(betId);
+	
 		
-		}
-		
-		else if (cmd.indexOf("add") >= 0) {
-			 if ("addStraightWages".equals(cmd)) {
-					
-					
-					
-				} else if ("addParlayMoneyline".equals(cmd)) {
-					
-					
-				} else if ("addParlayPoints".equals(cmd)) {
-					
-					
-				}
 			
 		} else if ("changeName".equals(cmd)) {
 			
@@ -72,11 +68,7 @@ public class EditBetCommand extends MobileCommand {
 		}
 		
 		
-		
-		BetDetailCommand detail = new BetDetailCommand(request);
-		detail.removeSession();
-		detail.setBetId(betId);
-		detail.execute();
+	
 		return "<success />";
 		
 		
@@ -84,6 +76,13 @@ public class EditBetCommand extends MobileCommand {
 	}
 	
 	
+	private void refresh(int betId) throws Exception {
+		
+		BetDetailCommand detail = new BetDetailCommand(request);
+				detail.removeSession();
+				detail.setBetId(betId);
+				detail.execute();
+	}
 	
 	
 	
@@ -111,6 +110,13 @@ public class EditBetCommand extends MobileCommand {
 				
 			
 		}
+		
+		Game game = bet.getGame(gameId);
+		if (game != null) {
+			BetComputer.computGameBet(game);
+		}
+		
+		BetComputer.computeBetStatus(bet);
 		
 	}
 

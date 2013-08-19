@@ -29,11 +29,10 @@ import org.apache.log4j.Logger;
      this.view = "displayBets.jsp";
    }
  
-   public String execute()
-     throws Exception
-   {
+   public String execute() throws Exception {
      Bets bets = null;
      if (this.updateBetStatus) {
+    	 
        UserDao dao = new UserDao();
        bets = dao.getUserBets(getUserId());
        TrackerGames trackGames = new TrackerGames();
@@ -41,14 +40,14 @@ import org.apache.log4j.Logger;
        List<Game> games = null;
   
        Calendar cal = Calendar.getInstance();
-       
+       Date now = new Date();
        SimpleDateFormat dateFormat = new SimpleDateFormat();
              
        for (Bet bet: bets.getBets()){
+    	   
     	   TimeZone timezone = TimeZones.valueOf(bet.getTimezone()).getTimeZone();
     	   cal.setTimeZone(timezone);
     	   trackGames.setTimezone(timezone);
-
     	   dateFormat.applyPattern(bet.getDateFormat());
            dateFormat.setTimeZone(timezone);
           
@@ -56,9 +55,9 @@ import org.apache.log4j.Logger;
 		    int number = -1;
     	   	for (Game game: games) {
    	   		 	game.setScheduleDate(dateFormat.parse(game.getSchedule()));
-    	   		number = compareGameDate(game,cal);
+    	   		number = compareGameDate(game,now, cal);
 		    	if ( number == 0 ) { 
-		    		// todays game (- or + 90 minutes after and before current time)
+		    		// could be a live game track the game to find out for sure and update it.
 
 		    		 trackGames.addGame(game);
 		    	} else if (number > 0) {
@@ -87,36 +86,9 @@ import org.apache.log4j.Logger;
 	         feed.saveFinishedGames();
 	       
        }
-	       for (Bet bet : bets.getBets())
-	       {
-	         for (Game game : bet.getGames())
-	         {
-	          /* if (game.getStatusType().equals("")) {
-	             Game g = trackGames.getGame(game);
-	             game.getHome().setScore(g.getHome().getScore());
-	             game.getAway().setScore(g.getAway().getScore());
-	             game.setStatusType(g.getStatusType());
-	           } */
-	           if (!game.isLive())
-	           {
-	             BetComputer.computGameBet(game);
-	             if ((game.isFinished()) && (bet.isParlay()) && (game.getStatus() < 100)) {
-	               bet.setParlayLost(true);
-	               bet.setStatus(0);
-	             }
-	           }
-	           else
-	           {
-	             BetComputer.computeLiveGameBet(game);
-	           }
-	         }
-	 
-	         if (!bet.isParlayLost()) {
-	           BetComputer.computeBetStatus(bet);
-	         }
-	 
+       
+       BetComputer.computeAllBetsStatus(bets);
 	       
-       }
  
        this.request.getSession().setAttribute("bets", bets);
      }
@@ -137,24 +109,37 @@ import org.apache.log4j.Logger;
    }
    
    
-   private int compareGameDate(Game game, Calendar cal) throws Exception {
+   /**
+    * 
+    * @param game
+    * @param now
+    * @param cal
+    * @return
+    * @throws Exception
+    */
+   private int compareGameDate(Game game, Date now, Calendar cal) throws Exception {
 	   
-	  
-	  cal.add(Calendar.MINUTE, -90);
-	  Date before = cal.getTime();
-	  cal.add(Calendar.MINUTE, 180);
-	  Date after = cal.getTime();
-	  Date d = game.getScheduleDate();
-	  if (d.compareTo(before) <= 0 ) {
-		  return -1;
-	  } else if (d.compareTo(after) >= 0 ) {
+	  Date gameDate = game.getScheduleDate();
+	  if (gameDate.after(now)) {
+		  
 		  return 1;
 	  } else {
 		  
-		  return 0;
+		  cal.setTime(gameDate);
+		  cal.add(Calendar.MINUTE, game.getLeage().getEstimatedDurationMinutes());
+		  if (now.after(cal.getTime())) {
+			  return -1;
+		  } else {
+			  
+			  return 0;
+		  }
+		
 	  }
-	   
+	
    }
+   
+   
+  
    
  }
 

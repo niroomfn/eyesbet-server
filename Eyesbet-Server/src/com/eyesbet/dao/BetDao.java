@@ -17,10 +17,10 @@ import java.util.Set;
  
  public class BetDao extends Dao
  {
-   private static String insertBet = "insert into bets (user_id,bet_type,bet_name,created_date,modified_date,timezone,date_format) values(?,?,?,?,?,?,?)";
+   private static String insertBet = "insert into bets (user_id,bet_type,bet_name,created_date,modified_date,timezone,date_format) values(?,?,?,now(),?,?,?)";
    private static String insertGame = "insert into game (id,bet_id,home,away,league,schedule) values (?,?,?,?,?,?)";
    private static String insertGameBet = "insert into game_bet (game_id,bet_id,bet_type,over_points,under_points,spread_point_team,spread_point,money_line,spread_point_favorite) values (?,?,?,?,?,?,?,?,?)";
- 
+   
    public void saveBet(int userId, Bet bet) throws Exception {
      Connection conn = null;
      ResultSet rs = null;
@@ -33,10 +33,10 @@ import java.util.Set;
        prep.setInt(1, userId);
        prep.setString(2, bet.getBetType().toString());
        prep.setString(3, bet.getName());
-       prep.setString(4, "");
-       prep.setString(5, " ");
-       prep.setString(6, bet.getTimezone());
-       prep.setString(7, DateTime.dateFormat);
+      // prep.setString(4, DateTime.convertToUSDate(new Date()));
+       prep.setString(4, " ");
+       prep.setString(5, bet.getTimezone());
+       prep.setString(6, DateTime.dateFormat);
        prep.executeUpdate();
        rs = prep.getGeneratedKeys();
        int betId = 0;

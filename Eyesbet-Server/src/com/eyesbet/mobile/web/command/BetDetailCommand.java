@@ -1,15 +1,18 @@
  package com.eyesbet.mobile.web.command;
  
  import com.eyesbet.business.domain.Bet;
- import com.eyesbet.business.domain.Bets;
- import com.eyesbet.business.domain.Game;
- import com.eyesbet.business.domain.GameBet;
- import java.util.List;
- import javax.servlet.http.HttpServletRequest;
+import com.eyesbet.business.domain.Bets;
+import com.eyesbet.business.domain.Game;
+import com.eyesbet.business.domain.GameBet;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
  
  public class BetDetailCommand extends MobileCommand
  {
-	
+	@SuppressWarnings("unused")
+	private static Logger logger = Logger.getLogger(BetDetailCommand.class);
 			private int betId;
 			
    public BetDetailCommand(HttpServletRequest request)
@@ -17,17 +20,16 @@
      super(request);
    }
  
-   public String execute()
-     throws Exception
-   {
+   public String execute()throws Exception {
 	
-	 		  String xml = null;
-     if (this.request.getSession().getAttribute("betDetail") == null)
-     {
+	  String xml = null;
+     if (this.request.getSession().getAttribute("betDetail") == null) {
       
 			   int betId = 0;
+
 			try {
 				betId = Integer.parseInt(request.getParameter("betId"));
+				
 			} catch (Exception e) {
 				
 				betId = this.betId;
@@ -35,18 +37,14 @@
 			
 			   
 		       Bets bets = (Bets)this.request.getSession().getAttribute("bets");
-		 
 		       Bet bet = bets.getBet(betId);
-		       
 		       xml = buildXml(bet);
 		 
 		       this.request.getSession().setAttribute("betDetail", xml);
 	 
        
      } else {
- 
-		      xml = (String)this.request.getSession().getAttribute("betDetail");
-		 
+		      xml = (String)this.request.getSession().getAttribute("betDetail");		 
 		     this.request.getSession().removeAttribute("betDetail");
      }
 	 

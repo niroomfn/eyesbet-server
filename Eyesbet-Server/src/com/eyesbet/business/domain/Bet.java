@@ -15,7 +15,6 @@ public class Bet {
 	private String createdDate;
 	private String modifiedDate;
 	private int id;
-	private boolean parlayLost = false;
 	private int status;
 	private String xml;
 	private String name;
@@ -51,6 +50,23 @@ public class Bet {
 			return true;
 		}
 		return false;
+	}
+	
+	
+	public Game getGame(int gameId) {
+		
+		
+		for (Game game: games) {
+			
+			if (game.getGameId() == gameId) {
+				
+				return game;
+			}
+		}
+		
+		
+		return null;
+		
 	}
 
 	public void addGame(Game game) {
@@ -119,17 +135,7 @@ public class Bet {
 		return set;
 	}
 
-	public Game getGame(String home, String away) {
-		for (Game game : this.games) {
-			if ((home.equals(game.getHome().getName()))
-					&& (away.equals(game.getAway().getName()))) {
-				return game;
-			}
-
-		}
-
-		return null;
-	}
+	
 
 	public int getStatus() {
 		return this.status;
@@ -162,9 +168,7 @@ public class Bet {
 	}
 
 	public String getStatusText() {
-		if (this.parlayLost) {
-			return "LOST";
-		}
+		
 		List<Game> list = getGames();
 		for (Game game : list) {
 			if ((game.isLive()) || (game.notStarted())) {
@@ -184,13 +188,7 @@ public class Bet {
 		return "Unkown";
 	}
 
-	public boolean isParlayLost() {
-		return this.parlayLost;
-	}
-
-	public void setParlayLost(boolean parlayLost) {
-		this.parlayLost = parlayLost;
-	}
+	
 
 	public String getXml() {
 		return this.xml;

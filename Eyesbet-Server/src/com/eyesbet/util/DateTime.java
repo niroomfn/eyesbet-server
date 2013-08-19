@@ -49,6 +49,12 @@
  
    
  
+   	public static String convertToUSDate(Date date) {
+   		
+   		
+   		return usFormat.format(date);
+   		
+   	}
  
   
  

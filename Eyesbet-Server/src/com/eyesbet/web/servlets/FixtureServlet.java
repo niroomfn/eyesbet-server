@@ -78,12 +78,14 @@ import org.apache.log4j.Logger;
  
        xml.append("</fixtures>");
      }
- 
+     //logger.debug("xml: "+xml.toString());
      response.setContentType("text/xml");
      response.setHeader("Cache-Control", "no-cache");
  
      response.getWriter().write(xml.toString());
+     response.getWriter().flush();
      response.getWriter().close();
+     
    }
  
    protected void doPost(HttpServletRequest request, HttpServletResponse response)
