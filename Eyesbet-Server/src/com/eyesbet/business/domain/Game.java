@@ -17,9 +17,10 @@ import java.util.Date;
    protected int status = 0;
    protected int overUnderStatus;
    protected int spreadPointStatus;
-   protected StatusType statusType;
+   protected GameStatusType gameStatusType;
    protected String statusDesc;
    protected Date scheduleDate;
+   protected boolean filtered;
  
    public Game()
    {
@@ -91,7 +92,7 @@ import java.util.Date;
  
    public boolean isLive()
    {
-     if (this.statusType == StatusType.inprogress) {
+     if (this.gameStatusType == GameStatusType.inprogress) {
        return true;
      }
      return false;
@@ -99,7 +100,7 @@ import java.util.Date;
  
    public boolean notStarted()
    {
-     if (this.statusType == StatusType.notstarted) {
+     if (this.gameStatusType == GameStatusType.notstarted) {
        return true;
      }
      return false;
@@ -124,7 +125,7 @@ import java.util.Date;
  
    public boolean isFinished()
    {
-     if (this.statusType == StatusType.finished) {
+     if (this.gameStatusType == GameStatusType.finished) {
        return true;
      }
  
@@ -178,25 +179,25 @@ import java.util.Date;
  
    public String getStatusType()
    {
-     if (this.statusType == null) {
+     if (this.gameStatusType == null) {
        return "";
      }
-     return this.statusType.toString();
+     return this.gameStatusType.toString();
    }
  
    public String getStatusTypeText()
    {
-     if (this.statusType == null) {
+     if (this.gameStatusType == null) {
        return "unkown";
      }
  
-     return this.statusType.getText();
+     return this.gameStatusType.getText();
    }
  
    public void setStatusType(String statusType)
    {
      try {
-       this.statusType = StatusType.valueOf(statusType);
+       this.gameStatusType = GameStatusType.valueOf(statusType);
      }
      catch (Exception localException)
      {
@@ -207,10 +208,51 @@ import java.util.Date;
    {
      return this.statusDesc;
    }
+   
+   
  
-   public void setStatusDesc(String statusDesc)
-   {
-     this.statusDesc = statusDesc.toUpperCase();
+   public void setStatusDesc(String statusDesc) {
+	this.statusDesc = statusDesc;
+}
+
+   public boolean updateStatusDesc(String statusDesc)
+   { 
+	   if (this.statusDesc.equals(statusDesc) == false) {
+		   this.statusDesc = statusDesc.toUpperCase();
+		   return true;
+	   } else {
+		   return false;
+	   }
+   }
+   
+   
+   public boolean updateStatusType(GameStatusType statusType) {
+	   
+	   if (this.gameStatusType != statusType) {
+		   this.gameStatusType = statusType;
+		   return true;
+	   }
+	   return false;
+   }
+   
+   public boolean updateHomeScore(int homeScore) {
+	   
+	   if (home.getScore() != homeScore) {
+		   home.setScore(homeScore);
+		   return true;
+	   }
+	   
+	   return false;
+   }
+   
+   public boolean updateAwayScore(int awayScore) {
+	   
+	   if (away.getScore() != awayScore) {
+		   away.setScore(awayScore);
+		   return true;
+	   }
+	   
+	   return false;
    }
  
    public String getDate()
@@ -222,7 +264,7 @@ import java.util.Date;
    public String toString()
    {
      return this.away.getName() + ": " + this.away.getScore() + " @ " +
-   this.home.getName() + ": " + this.home.getScore() + " STATUS: " + this.statusType;
+   this.home.getName() + ": " + this.home.getScore() + " STATUS: " + this.gameStatusType;
    }
  
    public int getBetId() {
@@ -327,6 +369,14 @@ import java.util.Date;
   
    
    
+   public GameStatusType getGameStatusType() {
+	return gameStatusType;
+   }
+
+   public void setGameStatusType(GameStatusType gameStatusType) {
+	this.gameStatusType = gameStatusType;
+   }
+
    public void updateBet(GameBet bet) {
 	   
 	   
@@ -348,24 +398,35 @@ import java.util.Date;
  
   public Date getScheduleDate() {
 	return scheduleDate;
-}
+  }
   
 
-public void setScheduleDate(Date scheduleDate) {
+  public void setScheduleDate(Date scheduleDate) {
 	this.scheduleDate = scheduleDate;
+  }
+
+
+  
+
+
+  public boolean isFiltered() {
+	return filtered;
+}
+
+public void setFiltered(boolean filtered) {
+	this.filtered = filtered;
 }
 
 
 
 
 
-public static enum StatusType
-   {
+public static enum GameStatusType {
      inprogress("In Progress"), finished("Finished"), notstarted("Not Started");
  
      private String text;
  
-     private StatusType(String text) { this.text = text; }
+     private GameStatusType(String text) { this.text = text; }
  
      public String getText()
      {

@@ -17,10 +17,15 @@ public class TrackerGames extends HashMap<Leagues, Set<Game>>
    private boolean hasFinishedGames;
    private static Logger logger = Logger.getLogger(TrackerGames.class);
    private TimeZone timezone = TimeZones.PT.getTimeZone();
+   
    public TrackerGames() {
-     put(Leagues.NBA, new HashSet<Game>());
-     put(Leagues.NFL, new HashSet<Game>());
-     put(Leagues.MLB, new HashSet<Game>());
+	  Leagues[] array =  Leagues.values();
+	  
+	  for (Leagues league: array) {
+		  
+		 put(league, new HashSet<Game>());
+	  }
+     
    }
  
    public void removeBet(int userId)
@@ -29,7 +34,8 @@ public class TrackerGames extends HashMap<Leagues, Set<Game>>
  
    public void addGames(Set<Game> set, int userId)
    {
-     Set<Game> games = getAllGames();
+    
+	   /*Set<Game> games = getAllGames();
      LiveGame livegame = null;
  
      for (Game g : games)
@@ -41,11 +47,12 @@ public class TrackerGames extends HashMap<Leagues, Set<Game>>
          livegame.remove();
        }
  
-     }
+     } */
  
-     for (Game g : set)
+     for (Game g : set) {
        if (!addGame(g.toLiveGame()))
          addUser(g, userId);
+     }
    }
  
    public boolean addGame(Game game)

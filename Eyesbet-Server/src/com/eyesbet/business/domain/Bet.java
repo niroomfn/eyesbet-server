@@ -18,6 +18,7 @@ public class Bet {
 	private int status;
 	private String xml;
 	private String name;
+	private boolean filtered;
 	private String timezone = TimeZones.PT.toString();
 	private String dateFormat = DateTime.dateFormat;
 
@@ -49,6 +50,17 @@ public class Bet {
 		if (this.betType == BetType.parlay) {
 			return true;
 		}
+		return false;
+	}
+	
+	
+	
+	public boolean isStraightWage() {
+		if (this.betType == BetType.straightWages) {
+			
+			return true;
+		}
+		
 		return false;
 	}
 	
@@ -310,6 +322,14 @@ public class Bet {
 		if (dateFormat != null) {
 			this.dateFormat = dateFormat;
 		}
+	}
+
+	public boolean isFiltered() {
+		return filtered;
+	}
+
+	public void setFiltered(boolean filtered) {
+		this.filtered = filtered;
 	}
 	
 	

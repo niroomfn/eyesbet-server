@@ -1,16 +1,17 @@
  package com.eyesbet.web.servlets;
  
  import com.eyesbet.business.BetComputer;
- import com.eyesbet.business.Tracker;
- import com.eyesbet.business.domain.Game;
- import com.eyesbet.business.domain.GameBet;
- import com.eyesbet.business.domain.MonitorBet;
- import java.io.IOException;
- import java.util.Set;
- import javax.servlet.ServletException;
- import javax.servlet.http.HttpServlet;
- import javax.servlet.http.HttpServletRequest;
- import javax.servlet.http.HttpServletResponse;
+import com.eyesbet.business.Tracker;
+import com.eyesbet.business.domain.Game;
+import com.eyesbet.business.domain.GameBet;
+import com.eyesbet.business.domain.MonitorBet;
+import java.io.IOException;
+import java.util.List;
+import java.util.Set;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
  
  public class LiveGameServlet extends HttpServlet
  {
@@ -23,9 +24,13 @@
      MonitorBet mbet = (MonitorBet)request.getSession().getAttribute("monitorBet");
      Set<Game> livegames = mbet.getLiveGames();
  
-     updateGameScores(livegames);
+     //updateGameScores(livegames);
+     
+    List<Game> updatedGames =  mbet.synchronizeTimestamps(monitor.getTimeStamps());
+     
+     
  
-     for (Game livegame : livegames)
+     for (Game livegame : updatedGames)
      {
        BetComputer.computeLiveGameBet(livegame);
      }

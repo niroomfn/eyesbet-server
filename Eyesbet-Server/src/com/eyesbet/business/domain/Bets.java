@@ -13,6 +13,7 @@ public class Bets extends HashMap<String, List<Bet>>
  {
    private int status;
    private String xml;
+   private boolean filtered = false;
  
    public void addBet(Bet bet)
    {
@@ -109,6 +110,8 @@ public class Bets extends HashMap<String, List<Bet>>
  
      return games;
    }
+   
+   
  
    public List<Bet> getBets()
    {
@@ -213,5 +216,16 @@ public class Bets extends HashMap<String, List<Bet>>
 				
 				
 			}
+
+			public boolean isFiltered() {
+				return filtered;
+			}
+
+			public void setFiltered(boolean filtered) {
+				this.filtered = filtered;
+			}
+			
+			
+			
  }
 

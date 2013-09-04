@@ -1,19 +1,19 @@
  package com.eyesbet.web.servlets;
  
  import com.eyesbet.business.BetComputer;
- import com.eyesbet.business.Tracker;
- import com.eyesbet.business.domain.Bet;
- import com.eyesbet.business.domain.Game;
- import com.eyesbet.business.domain.GameBet;
- import com.eyesbet.business.domain.MonitorBet;
- import java.io.IOException;
- import java.util.List;
- import java.util.Set;
- import javax.servlet.ServletException;
- import javax.servlet.http.HttpServlet;
- import javax.servlet.http.HttpServletRequest;
- import javax.servlet.http.HttpServletResponse;
- import org.apache.log4j.Logger;
+import com.eyesbet.business.Tracker;
+import com.eyesbet.business.domain.Bet;
+import com.eyesbet.business.domain.Game;
+import com.eyesbet.business.domain.GameBet;
+import com.eyesbet.business.domain.MonitorBet;
+import java.io.IOException;
+import java.util.List;
+import java.util.Set;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
  
  public class MonitorServlet extends HttpServlet
  {
@@ -41,9 +41,9 @@
  
      if ((livegames != null) && (livegames.size() > 0)) {
        BetComputer.computeBetStatus(bet);
+       mbet.synchronizeTimestamps(monitor.getTimeStamps());
      }
      xmlResponse.append("<bet id='" + bet.getId() + "' dt='" + dt + "'   type='" + bet.getBetType() + "' name='" + bet.getName() + "' s='" + bet.getStatusText() + "' > ");
- 
      for (Game game : livegames)
      {
        gamebet = game.getBet();
@@ -144,11 +144,18 @@
  
    private void createBetResponse(Game game, StringBuilder xmlResponse, boolean live, String betId)
    {
-     xmlResponse.append("<gamebet live='" + live + "' gid='" + game.getGameId() + "' bid='" + betId + "' a='" + game.getAway().getName() + "' h='" + game.getHome().getName() + "' ");
+     xmlResponse.append("<gamebet  live='" + live + "' gid='" + game.getGameId() + "' bid='" + betId + "' a='" + game.getAway().getName() + "' h='" + game.getHome().getName() + "' ");
  
      xmlResponse.append("as='" + game.getAway().getScore() + "' hs='" + game.getHome().getScore() + "' ");
  
      xmlResponse.append("sd='" + game.getStatusDesc() + "' ");
+     
+     if (live) {
+    	 
+    	 xmlResponse.append(" time='").append(monitor.getTimeStamps().getTimestamp(game.getGameId()));
+    	 xmlResponse.append("' ");
+     }
+     
    }
  
    private String getDisplayBetType(Bet bet)

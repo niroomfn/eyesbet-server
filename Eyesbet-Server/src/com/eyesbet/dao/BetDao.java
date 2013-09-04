@@ -114,8 +114,8 @@ import java.util.Set;
        if (rs.next()) {
          game.getHome().setScore(rs.getInt("home_score"));
          game.getAway().setScore(rs.getInt("away_score"));
-         game.setStatusType(Game.StatusType.finished.toString());
-         game.setStatusDesc(Game.StatusType.finished.toString());
+         game.setStatusType(Game.GameStatusType.finished.toString());
+         game.setStatusDesc(Game.GameStatusType.finished.toString());
          return true;
        }
      }

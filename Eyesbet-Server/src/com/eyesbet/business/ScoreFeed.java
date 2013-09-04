@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
  {
    private static Logger logger = Logger.getLogger(ScoreFeed.class);
    private TrackerGames games;
- 
+   private Timestamp timestamp;
    public ScoreFeed(TrackerGames games)
    {
      this.games = games;
@@ -42,6 +42,7 @@ import org.apache.log4j.Logger;
          try
          {
            LiveScoreFeedHandler handler = new LiveScoreFeedHandler(key, set);
+           handler.setTimestamp(timestamp);
            new FeedSaxParser(url, handler);
          }
          catch (Exception e) {
@@ -135,7 +136,21 @@ import org.apache.log4j.Logger;
    
    
    
-   public class DateKey {
+   
+   
+   public Timestamp getTimestamp() {
+	return timestamp;
+}
+
+public void setTimestamp(Timestamp timestamp) {
+	this.timestamp = timestamp;
+}
+
+
+
+
+
+public class DateKey {
 	   
 	   
 	   private Date date;

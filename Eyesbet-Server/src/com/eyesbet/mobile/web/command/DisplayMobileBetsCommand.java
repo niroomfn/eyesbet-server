@@ -33,13 +33,9 @@
    {
      List<Bet> list = null;
      Set<String> bettypes = bets.keySet();
-     boolean hasLiveGame = false;
-     if (this.request.getSession().getAttribute("liveGames") != null)
-     {
-       hasLiveGame = true;
-     }
  
-     this.xmlResponse.append("<xml livegame='" + hasLiveGame + "' >");
+     this.xmlResponse.append("<xml>");
+
      for (String type : bettypes) {
        list = bets.get(type);
        this.xmlResponse.append("<bets type='" + type + "' >");

@@ -1,17 +1,18 @@
  package com.eyesbet.app.xml;
  
- import com.eyesbet.business.domain.Fixtures.Leagues;
- import com.eyesbet.business.domain.Game;
- import com.eyesbet.business.domain.Team;
- import java.util.Set;
- import org.xml.sax.Attributes;
- import org.xml.sax.SAXException;
+ import com.eyesbet.business.Timestamp;
+import com.eyesbet.business.domain.Fixtures.Leagues;
+import com.eyesbet.business.domain.Game;
+import com.eyesbet.business.domain.Team;
+import java.util.Set;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
  
  public class LiveScoreFeedHandler extends FixtureHandler
  {
    private Set<Game> games;
    private Game game ;
- 
+   private Timestamp timestamp;
    public LiveScoreFeedHandler(Leagues tournament, Set<Game> games)
    {
      super(tournament);
@@ -74,17 +75,32 @@
  
      }
      
- 
+     StringBuilder result = new StringBuilder();
      for (Game g : this.games)
      {
        if ((g.getGameId() == game.getGameId()))
        {
-         g.getHome().setScore(game.getHome().getScore());
-         g.getAway().setScore(game.getAway().getScore());
-         g.setStatusType(game.getStatusType());
-         g.setStatusDesc(game.getStatusDesc());
+         result.append(g.updateHomeScore(game.getHome().getScore()));
+         result.append(g.updateAwayScore(game.getAway().getScore()));
+         result.append(g.updateStatusType(game.getGameStatusType()));
+         result.append(g.updateStatusDesc(game.getStatusDesc()));
+       }
+       
+       if (result.toString().indexOf("true") >= 0) {
+    	   
+    	   timestamp.update(g.getGameId());
        }
      }
    }
+
+public Timestamp getTimestamp() {
+	return timestamp;
+}
+
+public void setTimestamp(Timestamp timestamp) {
+	this.timestamp = timestamp;
+}
+   
+   
  }
 

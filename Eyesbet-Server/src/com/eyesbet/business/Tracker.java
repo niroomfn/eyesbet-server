@@ -1,7 +1,6 @@
  package com.eyesbet.business;
  
  import com.eyesbet.business.domain.Game;
-import com.eyesbet.business.domain.LiveGame;
 import com.eyesbet.business.domain.TrackerGames;
 import java.util.Random;
 import java.util.Set;
@@ -18,7 +17,8 @@ import org.apache.log4j.Logger;
    private TrackerGames games = new TrackerGames();
    private ScheduledExecutorService executor;
    private Random random = new Random();
- 
+   private Timestamp timestamp = new Timestamp();
+   
    public static Tracker getInstance()
    {
      return me;
@@ -26,10 +26,10 @@ import org.apache.log4j.Logger;
  
    public void addGames(Set<Game> set, int userId)
    {
-     for (Game game : set) {
+    /* for (Game game : set) {
        LiveGame livegame = game.toLiveGame();
        livegame.addUser(userId);
-     }
+     }  */
      this.games.addGames(set, userId);
  
      if ((this.executor == null) || (this.executor.isShutdown()))
@@ -52,13 +52,21 @@ import org.apache.log4j.Logger;
  
    public void stop()
    {
-     this.executor.shutdown();
+     executor.shutdown();
+     executor = null;
      logger.info("Task Stoped");
    }
  
    public void removeUser(int userId)
    {
      this.games.removeUser(userId);
+   }
+   
+   
+   public Timestamp getTimeStamps() {
+	   
+	   return timestamp;
+	   
    }
  
    public class TrackerTask implements Runnable {
@@ -68,22 +76,18 @@ import org.apache.log4j.Logger;
      }
  
      public void run() {
-       Tracker.logger.info("Tracking liveGames: ");
+       logger.info("Tracking liveGames: ");
  
-       if (Tracker.this.games.isEmpty()) {
-         Tracker.logger.info("No liveGames found to track. shuting down TrackerTask");
-         Tracker.this.executor.shutdown();
-         Tracker.this.executor = null;
+       if (games.isEmpty()) {
+         logger.info("No liveGames found to track. shuting down TrackerTask");
+         Tracker.this.stop();
        }
        else {
-         ScoreFeed feed = new ScoreFeed(Tracker.this.games);
+         ScoreFeed feed = new ScoreFeed(games);
+         feed.setTimestamp(timestamp);
          feed.updateLiveScores();
        }
      }
    }
  }
 
-/* Location:           C:\Users\farbod.niroomand.cor\Desktop\eyesbetwar\classes\
- * Qualified Name:     com.eyesbet.business.Tracker
- * JD-Core Version:    0.6.2
- */

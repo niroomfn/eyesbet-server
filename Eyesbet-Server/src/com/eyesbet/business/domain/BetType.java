@@ -18,7 +18,3 @@
 
  }
 
-/* Location:           C:\Users\farbod.niroomand.cor\Desktop\eyesbetwar\classes\
- * Qualified Name:     com.eyesbet.business.domain.BetType
- * JD-Core Version:    0.6.2
- */

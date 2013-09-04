@@ -7,7 +7,7 @@ import com.eyesbet.business.domain.Bet;
 import com.eyesbet.business.domain.Bets;
 import com.eyesbet.business.domain.Fixtures.TimeZones;
 import com.eyesbet.business.domain.Game;
-import com.eyesbet.business.domain.Game.StatusType;
+import com.eyesbet.business.domain.Game.GameStatusType;
 import com.eyesbet.business.domain.TrackerGames;
 import com.eyesbet.dao.UserDao;
 import java.text.SimpleDateFormat;
@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
        Date now = new Date();
        SimpleDateFormat dateFormat = new SimpleDateFormat();
              
-       for (Bet bet: bets.getBets()){
+       for (Bet bet: bets.getBets())	{
     	   
     	   TimeZone timezone = TimeZones.valueOf(bet.getTimezone()).getTimeZone();
     	   cal.setTimeZone(timezone);
@@ -63,7 +63,7 @@ import org.apache.log4j.Logger;
 		    	} else if (number > 0) {
 		    		    // future game
 		    		
-		    		game.setStatusType(StatusType.notstarted.toString());
+		    		game.setStatusType(GameStatusType.notstarted.toString());
 		    		
 		    	} else { // finished game
 		    		 if (!service.updateGameScores(game)) {
@@ -137,6 +137,7 @@ import org.apache.log4j.Logger;
 	  }
 	
    }
+   
    
    
   

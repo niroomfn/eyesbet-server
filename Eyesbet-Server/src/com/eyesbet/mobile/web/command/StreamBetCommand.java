@@ -41,15 +41,6 @@ public class StreamBetCommand extends MobileCommand
            this.xmlResponse.append("<bet n='" + bet.getName() + "' v='" + bet.getId() + "' />");
          }
  
-        /* Service service = new Service();
-         SortedGames sgames = service.sortByGameStartTime(bets);
-         List<Game> games = sgames.getGames();
-         this.xmlResponse.append("<games>");
-         for (Game g : games)
-         {
-           this.xmlResponse.append("<game g='" + g.getAway().getName() + " @ " + g.getHome().getName() + "' st='" + SortedGames.getStartTime(g) + "' ");
-           this.xmlResponse.append("bets='" + sgames.getBetNames(g.getGameId()) + "' />");
-         }*/
  
          this.xmlResponse.append("</bets>");
  

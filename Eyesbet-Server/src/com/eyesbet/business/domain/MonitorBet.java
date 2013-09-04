@@ -1,13 +1,18 @@
  package com.eyesbet.business.domain;
  
- import java.util.Set;
+ import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import com.eyesbet.business.Timestamp;
  
  public class MonitorBet
  {
    private Bet bet;
    private Set<Game> liveGames;
    private boolean hasNotStartedGame;
- 
+   private Timestamp timestamp;
+   
    public MonitorBet(Bet bet)
    {
      this.bet = bet;
@@ -21,6 +26,7 @@
  
    public void setLiveGames(Set<Game> liveGames) {
      this.liveGames = liveGames;
+     
    }
  
    public Bet getBet() {
@@ -34,9 +40,25 @@
    public void setHasNotStatedGame(boolean hasNotStatedGame) {
      this.hasNotStartedGame = hasNotStatedGame;
    }
+   
+   
+   public List<Game> synchronizeTimestamps(Timestamp timestamp) {
+	   
+	   List<Game> updatedGames = new ArrayList<Game>(liveGames.size());
+	   String time = null;
+	   for (Game game: liveGames) {
+		   time = this.timestamp.getTimestamp(game.getGameId());
+		   if (time == null || time.equals(timestamp.getTimestamp(game.getGameId())) == false) {
+			   this.timestamp.update(game.getGameId(), timestamp.getTimestamp(game.getGameId()));
+			   updatedGames.add(game);
+		   
+		   }
+		   
+		   
+	   }
+	   
+	   return updatedGames;
+   }
+   
  }
 
-/* Location:           C:\Users\farbod.niroomand.cor\Desktop\eyesbetwar\classes\
- * Qualified Name:     com.eyesbet.business.domain.MonitorBet
- * JD-Core Version:    0.6.2
- */
